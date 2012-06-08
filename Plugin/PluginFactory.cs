@@ -1,4 +1,5 @@
 using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Utilities;
 
@@ -14,12 +15,19 @@ namespace EditorConfig.VisualStudio
     [TextViewRole(PredefinedTextViewRoles.Document)]
     internal sealed class PluginFactory : IWpfTextViewCreationListener
     {
+        [Import]
+        ITextDocumentFactoryService docFactory = null;
+
         /// <summary>
         /// Creates a plugin instance when a new text editor is opened
         /// </summary>
         public void TextViewCreated(IWpfTextView view)
         {
-            new Plugin(view);
+            ITextDocument document;
+            if (!docFactory.TryGetTextDocument(view.TextDataModel.DocumentBuffer, out document))
+                return;
+
+            new Plugin(view, document);
         }
     }
 }
