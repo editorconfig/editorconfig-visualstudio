@@ -49,6 +49,12 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wrapper\Wrapper.vcxproj">
+      <Project>{85F4C576-ECA4-44D7-98D0-FE065632C51E}</Project>
+      <Name>Wrapper</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\VSSDK\Microsoft.VsSDK.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
