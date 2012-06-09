@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using EnvDTE;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 
@@ -11,11 +12,13 @@ namespace EditorConfig.VisualStudio
     internal class Plugin
     {
         IWpfTextView view;
+        DTE dte;
         Dictionary<string, string> settings;
 
-        public Plugin(IWpfTextView view, ITextDocument document)
+        public Plugin(IWpfTextView view, ITextDocument document, DTE dte)
         {
             this.view = view;
+            this.dte = dte;
 
             document.FileActionOccurred += FileActionOccurred;
 

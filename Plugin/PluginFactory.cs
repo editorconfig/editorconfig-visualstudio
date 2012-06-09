@@ -1,5 +1,9 @@
 using System.ComponentModel.Composition;
+using System.Runtime.InteropServices;
+using EnvDTE;
 using Microsoft.VisualStudio.Editor;
+using Microsoft.VisualStudio.OLE.Interop;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
@@ -36,7 +40,24 @@ namespace EditorConfig.VisualStudio
             if (!docFactory.TryGetTextDocument(view.TextDataModel.DocumentBuffer, out document))
                 return;
 
-            new Plugin(view, document);
+            IObjectWithSite iows = adapter as IObjectWithSite;
+            if (iows == null)
+                return;
+
+            System.IntPtr p;
+            iows.GetSite(typeof(IServiceProvider).GUID, out p);
+            if (p == System.IntPtr.Zero)
+                return;
+
+            IServiceProvider isp = Marshal.GetObjectForIUnknown(p) as IServiceProvider;
+            if (isp == null)
+                return;
+
+            ServiceProvider sp = new ServiceProvider(isp);
+            DTE dte = sp.GetService(typeof(DTE)) as DTE;
+            sp.Dispose();
+
+            new Plugin(view, document, dte);
         }
     }
 }
