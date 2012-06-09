@@ -30,8 +30,6 @@ namespace EditorConfig.VisualStudio
         /// </summary>
         private void LoadSettings(string path)
         {
-            using (var log = new System.IO.StreamWriter(System.IO.Path.GetTempPath() + "editorconfig.log"))
-                log.Write("Load settings for file " + path);
         }
     }
 }
