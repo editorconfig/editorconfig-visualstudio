@@ -4,8 +4,14 @@ This plugin causes Visual Studio to load it's indentation options from a standar
 
 ## Building
 
-To build this software, first download and build the [core library](https://github.com/editorconfig/editorconfig-core) from Github. Follow the build instructions as normal, but include the `-DMSVC_MD=ON` option when invoking CMake.
+To build this software, first download and build the [EditorConfig core library](https://github.com/editorconfig/editorconfig-core) in the `Core` directory. To download the core library, use the git commands:
 
-Once the core library is built, edit its location into the `core.props` configuration file.
+    git submodule init
+    git submodule update
 
-Finally, open the Visual Studio solution file and build it. You may need to install the [Visual Studio SDK](https://www.microsoft.com/en-us/download/details.aspx?displaylang=en&id=2680) for this to work. Once the plugin is built, you will have a file named `Plugin/bin/(Debug|Release)/VSEditorConfig.vsix`. This is the plugin, and double-clicking it installs it into Visual Studio.
+Follow the build instructions for the core library as normal, but include the `-DMSVC_MD=ON` option when invoking CMake:
+
+    cd Core/
+    cmake . -DMSVC_MD=ON
+
+Once the core library is built, open the solution file `EditorConfigVS.sln` and compile the plugin. You may need to install the [Visual Studio SDK](https://www.microsoft.com/en-us/download/details.aspx?displaylang=en&id=2680) for this to work. The resulting plugin is named `Plugin/bin/(Debug|Release)/VSEditorConfig.vsix`, and double-clicking installs it into Visual Studio.
