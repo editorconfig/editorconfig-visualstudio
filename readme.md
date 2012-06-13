@@ -1,6 +1,6 @@
 # EditorConfig Visual Studio Plugin
 
-This plugin causes Visual Studio to load it's indentation options from a standard `.editorconfig` settings file. See the [project web site](http://editorconfig.org) for more information.
+This plugin causes Visual Studio to load it's indentation options from a standard `.editorconfig` settings file. See the [project web site](http://editorconfig.org) for more information. Currently this addin only works on Visual Studio 2010 and later version.
 
 ## Installing
 
