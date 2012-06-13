@@ -4,7 +4,7 @@ This plugin causes Visual Studio to load it's indentation options from a standar
 
 ## Installing
 
-The easiest way to install this plugin is through Visual Studio's built-in Extension Manager. Just search for "EditorConfig" in the Online Gallery section. Or, download a copy from the [Visual Studio gallery](http://visualstudiogallery.msdn.microsoft.com/c8bccfe2-650c-4b42-bc5c-845e21f96328) website.
+This plugin works with Visual Studio 2010 or later. The easiest way to install it is through Visual Studio's built-in Extension Manager. Just search for "EditorConfig" in the Online Gallery section. Or, download a copy from the [Visual Studio gallery](http://visualstudiogallery.msdn.microsoft.com/c8bccfe2-650c-4b42-bc5c-845e21f96328) website.
 
 ## Building
 
