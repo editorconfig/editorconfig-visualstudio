@@ -23,6 +23,8 @@ namespace EditorConfig.VisualStudio
         [Import]
         internal SVsServiceProvider serviceProvider = null;
 
+        ErrorListProvider messageList = null;
+
         /// <summary>
         /// Creates a plugin instance when a new text editor is opened
         /// </summary>
@@ -36,7 +38,14 @@ namespace EditorConfig.VisualStudio
             if (dte == null)
                 return;
 
-            new Plugin(view, document, dte);
+            if (messageList == null)
+            {
+                messageList = new ErrorListProvider(serviceProvider);
+                messageList.ProviderGuid = new System.Guid("{6B4A6B64-EDA9-4078-A549-905ED7D6B8AA}");
+                messageList.ProviderName = "EditorConfig";
+            }
+
+            new Plugin(view, document, dte, messageList);
         }
     }
 }

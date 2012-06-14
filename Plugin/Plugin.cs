@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using EnvDTE;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 
@@ -13,12 +14,14 @@ namespace EditorConfig.VisualStudio
     {
         IWpfTextView view;
         DTE dte;
+        ErrorListProvider messageList;
         Dictionary<string, string> settings;
 
-        public Plugin(IWpfTextView view, ITextDocument document, DTE dte)
+        public Plugin(IWpfTextView view, ITextDocument document, DTE dte, ErrorListProvider messageList)
         {
             this.view = view;
             this.dte = dte;
+            this.messageList = messageList;
 
             document.FileActionOccurred += FileActionOccurred;
             view.GotAggregateFocus += GotAggregateFocus;
