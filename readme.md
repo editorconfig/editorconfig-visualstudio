@@ -19,3 +19,13 @@ Follow the build instructions for the core library as normal, but include the `-
     cmake . -DMSVC_MD=ON
 
 Once the core library is built, open the solution file `EditorConfigVS.sln` and compile the plugin. You may need to install the [Visual Studio SDK](https://www.microsoft.com/en-us/download/details.aspx?displaylang=en&id=2680) for this to work. The resulting plugin is named `Plugin/bin/(Debug|Release)/VSEditorConfig.vsix`, and double-clicking installs it into Visual Studio.
+
+## Supported properties
+
+The plugin supports the following EditorConfig [properties](http://editorconfig.org/#supported-properties):
+
+* indent_style
+* indent_size
+* tab_width
+* end_of_line
+* root (only used by EditorConfig core)
