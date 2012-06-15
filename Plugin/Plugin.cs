@@ -15,6 +15,7 @@ namespace EditorConfig.VisualStudio
         IWpfTextView view;
         DTE dte;
         ErrorListProvider messageList;
+        ErrorTask message;
         Dictionary<string, string> settings;
 
         public Plugin(IWpfTextView view, ITextDocument document, DTE dte, ErrorListProvider messageList)
@@ -22,9 +23,11 @@ namespace EditorConfig.VisualStudio
             this.view = view;
             this.dte = dte;
             this.messageList = messageList;
+            this.message = null;
 
             document.FileActionOccurred += FileActionOccurred;
             view.GotAggregateFocus += GotAggregateFocus;
+            view.Closed += Closed;
 
             LoadSettings(document.FilePath);
         }
@@ -51,20 +54,33 @@ namespace EditorConfig.VisualStudio
         }
 
         /// <summary>
+        /// Removes the any messages when the document is closed
+        /// </summary>
+        void Closed(object sender, System.EventArgs e)
+        {
+            ClearMessage();
+        }
+
+        /// <summary>
         /// Loads the settings for the given file path
         /// </summary>
         private void LoadSettings(string path)
         {
+            ClearMessage();
+            settings = null;
+
             try
             {
                 settings = Core.Parse(path);
-                if (settings != null)
-                    ApplyLocalSettings();
+                ApplyLocalSettings();
             }
-            catch
+            catch (ParseException e)
             {
-                //TODO: Display an appropriate error message
-                System.Media.SystemSounds.Beep.Play();
+                ShowError(path, "EditorConfig syntax error in file \"" + e.File + "\", line " + e.Line);
+            }
+            catch (CoreException e)
+            {
+                ShowError(path, "EditorConfig core error: " + e.Message);
             }
         }
 
@@ -77,14 +93,22 @@ namespace EditorConfig.VisualStudio
 
             if (settings.ContainsKey("tab_width"))
             {
-                int value = System.Convert.ToInt32(settings["tab_width"]);
-                options.SetOptionValue<int>(DefaultOptions.TabSizeOptionId, value);
+                try
+                {
+                    int value = System.Convert.ToInt32(settings["tab_width"]);
+                    options.SetOptionValue<int>(DefaultOptions.TabSizeOptionId, value);
+                }
+                catch { }
             }
 
             if (settings.ContainsKey("indent_size"))
             {
-                int value = System.Convert.ToInt32(settings["indent_size"]);
-                options.SetOptionValue<int>(DefaultOptions.IndentSizeOptionId, value);
+                try
+                {
+                    int value = System.Convert.ToInt32(settings["indent_size"]);
+                    options.SetOptionValue<int>(DefaultOptions.IndentSizeOptionId, value);
+                }
+                catch { }
             }
 
             if (settings.ContainsKey("indent_style"))
@@ -158,6 +182,33 @@ namespace EditorConfig.VisualStudio
                 // If the above code didn't work, this particular content type
                 // didn't need its settings changed anyhow
             }
+        }
+
+        /// <summary>
+        /// Adds an error message to the Visual Studio tasks pane
+        /// </summary>
+        void ShowError(string path, string text)
+        {
+            message = new ErrorTask();
+            message.ErrorCategory = TaskErrorCategory.Error;
+            message.Category = TaskCategory.Comments;
+            message.Document = path;
+            message.Line = 0;
+            message.Column = 0;
+            message.Text = text;
+
+            messageList.Tasks.Add(message);
+            messageList.Show();
+        }
+
+        /// <summary>
+        /// Removes the file's messages, if any
+        /// </summary>
+        void ClearMessage()
+        {
+            if (message != null)
+                messageList.Tasks.Remove(message);
+            message = null;
         }
     }
 }
