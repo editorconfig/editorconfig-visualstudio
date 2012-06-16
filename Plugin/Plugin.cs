@@ -151,36 +151,46 @@ namespace EditorConfig.VisualStudio
         /// </summary>
         private void ApplyGlobalSettings()
         {
+            EnvDTE.Properties props;
             try
             {
                 string type = view.TextDataModel.ContentType.TypeName;
-                EnvDTE.Properties props = dte.get_Properties("TextEditor", type);
-
-                if (settings.ContainsKey("tab_width"))
-                {
-                    int value = System.Convert.ToInt32(settings["tab_width"]);
-                    props.Item("TabSize").Value = value;
-                }
-
-                if (settings.ContainsKey("indent_size"))
-                {
-                    int value = System.Convert.ToInt32(settings["indent_size"]);
-                    props.Item("IndentSize").Value = value;
-                }
-
-                if (settings.ContainsKey("indent_style"))
-                {
-                    string value = settings["indent_style"];
-                    if (value == "tab")
-                        props.Item("InsertTabs").Value = true;
-                    else if (value == "space")
-                        props.Item("InsertTabs").Value = false;
-                }
+                props = dte.get_Properties("TextEditor", type);
             }
             catch
             {
                 // If the above code didn't work, this particular content type
                 // didn't need its settings changed anyhow
+                return;
+            }
+
+            if (settings.ContainsKey("tab_width"))
+            {
+                try
+                {
+                    int value = System.Convert.ToInt32(settings["tab_width"]);
+                    props.Item("TabSize").Value = value;
+                }
+                catch { }
+            }
+
+            if (settings.ContainsKey("indent_size"))
+            {
+                try
+                {
+                    int value = System.Convert.ToInt32(settings["indent_size"]);
+                    props.Item("IndentSize").Value = value;
+                }
+                catch { }
+            }
+
+            if (settings.ContainsKey("indent_style"))
+            {
+                string value = settings["indent_style"];
+                if (value == "tab")
+                    props.Item("InsertTabs").Value = true;
+                else if (value == "space")
+                    props.Item("InsertTabs").Value = false;
             }
         }
 
