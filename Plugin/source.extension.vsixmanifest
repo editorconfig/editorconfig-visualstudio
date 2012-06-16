@@ -3,7 +3,7 @@
   <Identifier Id="EditorConfig..5cd8e6a2-be43-4fcc-a345-40f6cc1e9c9f">
     <Name>EditorConfig</Name>
     <Author>EditorConfig Team</Author>
-    <Version>0.2.1</Version>
+    <Version>0.2.2</Version>
     <Description xml:space="preserve">Loads editor options such as indentation sizes from standard, cross-platform .editorconfig files.</Description>
     <Locale>1033</Locale>
     <MoreInfoUrl>http://editorconfig.org/</MoreInfoUrl>
