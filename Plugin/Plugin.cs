@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
@@ -16,7 +15,7 @@ namespace EditorConfig.VisualStudio
         DTE dte;
         ErrorListProvider messageList;
         ErrorTask message;
-        Dictionary<string, string> settings;
+        Results settings;
 
         public Plugin(IWpfTextView view, ITextDocument document, DTE dte, ErrorListProvider messageList)
         {

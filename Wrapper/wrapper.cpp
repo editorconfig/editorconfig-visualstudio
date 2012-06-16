@@ -3,7 +3,12 @@
 
 namespace EditorConfig {
 
-  typedef System::Collections::Generic::Dictionary<String^, String^> Results;
+  public ref class Results : public System::Collections::Generic::Dictionary<String^, String^>
+  {
+  public:
+    Results()
+    {}
+  };
 
   public ref class ParseException : public System::Exception
   {
