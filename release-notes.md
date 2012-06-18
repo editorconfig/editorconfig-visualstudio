@@ -1,5 +1,10 @@
 # Release Notes
 
+## 0.2.4
+
+* Handle config files that have a Unicode BOM mark
+* Ignore paths that begin with "http:"
+
 ## 0.2.3
 
 * Fully handle the `indent_size=tab` case
