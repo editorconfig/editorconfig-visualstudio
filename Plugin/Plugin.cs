@@ -1,3 +1,4 @@
+using System;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
@@ -46,7 +47,7 @@ namespace EditorConfig.VisualStudio
         /// <summary>
         /// Updates the global settings when the local editor receives focus
         /// </summary>
-        void GotAggregateFocus(object sender, System.EventArgs e)
+        void GotAggregateFocus(object sender, EventArgs e)
         {
             if (settings != null)
                 ApplyGlobalSettings();
@@ -55,7 +56,7 @@ namespace EditorConfig.VisualStudio
         /// <summary>
         /// Removes the any messages when the document is closed
         /// </summary>
-        void Closed(object sender, System.EventArgs e)
+        void Closed(object sender, EventArgs e)
         {
             ClearMessage();
         }
@@ -94,7 +95,7 @@ namespace EditorConfig.VisualStudio
             {
                 try
                 {
-                    int value = System.Convert.ToInt32(settings["tab_width"]);
+                    int value = Convert.ToInt32(settings["tab_width"]);
                     options.SetOptionValue<int>(DefaultOptions.TabSizeOptionId, value);
                 }
                 catch { }
@@ -104,7 +105,7 @@ namespace EditorConfig.VisualStudio
             {
                 try
                 {
-                    int value = System.Convert.ToInt32(settings["indent_size"]);
+                    int value = Convert.ToInt32(settings["indent_size"]);
                     options.SetOptionValue<int>(DefaultOptions.IndentSizeOptionId, value);
                 }
                 catch { }
@@ -167,7 +168,7 @@ namespace EditorConfig.VisualStudio
             {
                 try
                 {
-                    int value = System.Convert.ToInt32(settings["tab_width"]);
+                    int value = Convert.ToInt32(settings["tab_width"]);
                     props.Item("TabSize").Value = value;
                 }
                 catch { }
@@ -177,7 +178,7 @@ namespace EditorConfig.VisualStudio
             {
                 try
                 {
-                    int value = System.Convert.ToInt32(settings["indent_size"]);
+                    int value = Convert.ToInt32(settings["indent_size"]);
                     props.Item("IndentSize").Value = value;
                 }
                 catch { }
