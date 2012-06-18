@@ -71,8 +71,11 @@ namespace EditorConfig.VisualStudio
 
             try
             {
-                settings = Core.Parse(path);
-                ApplyLocalSettings();
+                if (!path.StartsWith("http:", StringComparison.OrdinalIgnoreCase))
+                {
+                    settings = Core.Parse(path);
+                    ApplyLocalSettings();
+                }
             }
             catch (ParseException e)
             {
