@@ -28,3 +28,7 @@ The plugin supports the following EditorConfig [properties](http://editorconfig.
 * tab_width
 * end_of_line
 * root (only used by EditorConfig core)
+
+## Reporting problems
+
+If you encounter any problems, feel free to report them at the central EditorConfig [issue tracker](https://github.com/editorconfig/editorconfig/issues).
