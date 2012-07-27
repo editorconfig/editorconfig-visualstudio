@@ -69,13 +69,16 @@ namespace EditorConfig.VisualStudio
             ClearMessage();
             settings = null;
 
+            // Prevent parsing of internet-located documents,
+            // or documents that do not have proper paths.
+            if (path.StartsWith("http:", StringComparison.OrdinalIgnoreCase)
+                || path.Equals("Temp.txt"))
+                return;
+
             try
             {
-                if (!path.StartsWith("http:", StringComparison.OrdinalIgnoreCase))
-                {
-                    settings = Core.Parse(path);
-                    ApplyLocalSettings();
-                }
+                settings = Core.Parse(path);
+                ApplyLocalSettings();
             }
             catch (ParseException e)
             {
