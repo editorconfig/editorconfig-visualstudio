@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.2.6
+
+* Visual Studio 2012 support
+
 ## 0.2.5
 
 * Ignore certain unsaved files (fix by Karaken12)
