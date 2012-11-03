@@ -2,6 +2,7 @@
 *.sdf
 *.suo
 *.user
+*.ncrunchsolution
 [Dd]ebug
 [Rr]elease
 bin

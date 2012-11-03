@@ -69,7 +69,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>..\Core\lib\MinSizeRel\editorconfig_static.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\Core\lib\$(Configuration)\editorconfig_static.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
