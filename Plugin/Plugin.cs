@@ -96,7 +96,7 @@ namespace EditorConfig.VisualStudio
         private void ApplyLocalSettings()
         {
             IEditorOptions options = view.Options;
-
+            
             if (settings.ContainsKey("tab_width"))
             {
                 try
