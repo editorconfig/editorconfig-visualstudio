@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin", "Plugin\Plugin.csproj", "{47C063F7-1FE9-4695-9854-30DF51B87783}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditorConfigPackage", "Plugin\EditorConfigPackage.csproj", "{47C063F7-1FE9-4695-9854-30DF51B87783}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Wrapper", "Wrapper\Wrapper.vcxproj", "{85F4C576-ECA4-44D7-98D0-FE065632C51E}"
 EndProject

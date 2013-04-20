@@ -10,7 +10,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EditorConfig.VisualStudio</RootNamespace>
-    <AssemblyName>EditorConfigPlugin</AssemblyName>
+    <AssemblyName>EditorConfigPackage</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
@@ -39,10 +39,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="EditorConfigPackage.cs" />
+    <Compile Include="Integration\GuidList.cs" />
     <Compile Include="Helpers\ResultsExtensions.cs" />
     <Compile Include="Settings\GlobalSettings.cs" />
-    <Compile Include="PluginFactory.cs" />
-    <Compile Include="Plugin.cs" />
+    <Compile Include="Integration\Events\TextViewCreationListener.cs" />
+    <Compile Include="Integration\TextViewMonitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\Loader.cs" />
     <Compile Include="Settings\LocalSettings.cs" />
@@ -52,6 +54,16 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="Resources\EditorConfig.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Resources\EditorConfig_Large.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Resources\EditorConfig.ico" />
+    <None Include="Key.snk" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
@@ -59,6 +71,7 @@
   <ItemGroup>
     <Reference Include="EnvDTE" />
     <Reference Include="Microsoft.VisualStudio.CoreUtility" />
+    <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Microsoft.VisualStudio.Shell" />
     <Reference Include="Microsoft.VisualStudio.Shell.Immutable.10.0" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop" />
@@ -70,13 +83,23 @@
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Wrapper\Wrapper.vcxproj">
       <Project>{85F4C576-ECA4-44D7-98D0-FE065632C51E}</Project>
-      <Name>Wrapper</Name>
+      <Name>Wrapper %28Visual Studio 2010%29</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="VSPackage.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Logic\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

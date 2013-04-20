@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using System;
 
-namespace EditorConfig.VisualStudio
+namespace EditorConfig.VisualStudio.Integration
 {
     using Settings;
 
@@ -12,7 +12,7 @@ namespace EditorConfig.VisualStudio
     /// This plugin attaches to an editor instance and updates its settings at
     /// the appropriate times
     /// </summary>
-    internal class Plugin : IDisposable
+    internal class TextViewMonitor : IDisposable
     {
         private readonly IWpfTextView _view;
         private readonly ITextDocument _doc;
@@ -20,7 +20,7 @@ namespace EditorConfig.VisualStudio
         private readonly Loader _loader;
         private readonly GlobalSettings _globalSettings;
 
-        public Plugin(IWpfTextView view, ITextDocument document, DTE app, ErrorListProvider messageList)
+        public TextViewMonitor(IWpfTextView view, ITextDocument document, DTE app, ErrorListProvider messageList)
         {
             _view = view;
             _doc = document;

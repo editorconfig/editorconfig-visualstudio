@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.Utilities;
 using System;
 using System.ComponentModel.Composition;
 
-namespace EditorConfig.VisualStudio
+namespace EditorConfig.VisualStudio.Integration.Events
 {
     /// <summary>
     /// Listens for editor-creation events and attaches a new plugin instance
@@ -16,7 +16,7 @@ namespace EditorConfig.VisualStudio
     [Export(typeof(IWpfTextViewCreationListener))]
     [ContentType("text")]
     [TextViewRole(PredefinedTextViewRoles.Document)]
-    internal sealed class PluginFactory : IWpfTextViewCreationListener, IDisposable
+    internal sealed class TextViewCreationListener : IWpfTextViewCreationListener, IDisposable
     {
         [Import]
         internal ITextDocumentFactoryService DocFactory;
@@ -25,7 +25,7 @@ namespace EditorConfig.VisualStudio
         internal SVsServiceProvider ServiceProvider;
 
         private ErrorListProvider _messageList;
-        private Plugin _plugin;
+        private TextViewMonitor _monitor;
 
         /// <summary>
         /// Creates a plugin instance when a new text editor is opened
@@ -44,17 +44,17 @@ namespace EditorConfig.VisualStudio
             {
                 _messageList = new ErrorListProvider(ServiceProvider)
                     {
-                        ProviderGuid = new Guid("{6B4A6B64-EDA9-4078-A549-905ED7D6B8AA}"),
+                        ProviderGuid = new Guid(GuidList.GuidEditorConfigPkgString),
                         ProviderName = "EditorConfig"
                     };
             }
 
-            _plugin = new Plugin(view, document, app, _messageList);
+            _monitor = new TextViewMonitor(view, document, app, _messageList);
         }
 
         public void Dispose()
         {
-            _plugin.Dispose();
+            _monitor.Dispose();
         }
     }
 }
