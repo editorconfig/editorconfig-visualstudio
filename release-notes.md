@@ -1,5 +1,13 @@
 # Release Notes
 
+## 0.3.1
+
+* Restores global settings when document loses focus
+
+## 0.3.0
+
+* Built against Core 0.11.0
+
 ## 0.2.6
 
 * Visual Studio 2012 support
