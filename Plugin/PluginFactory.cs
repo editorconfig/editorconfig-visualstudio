@@ -1,9 +1,10 @@
-using System.ComponentModel.Composition;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Utilities;
+using System;
+using System.ComponentModel.Composition;
 
 namespace EditorConfig.VisualStudio
 {
@@ -15,15 +16,16 @@ namespace EditorConfig.VisualStudio
     [Export(typeof(IWpfTextViewCreationListener))]
     [ContentType("text")]
     [TextViewRole(PredefinedTextViewRoles.Document)]
-    internal sealed class PluginFactory : IWpfTextViewCreationListener
+    internal sealed class PluginFactory : IWpfTextViewCreationListener, IDisposable
     {
         [Import]
-        internal ITextDocumentFactoryService docFactory = null;
+        internal ITextDocumentFactoryService DocFactory;
 
         [Import]
-        internal SVsServiceProvider serviceProvider = null;
+        internal SVsServiceProvider ServiceProvider;
 
-        ErrorListProvider messageList = null;
+        private ErrorListProvider _messageList;
+        private Plugin _plugin;
 
         /// <summary>
         /// Creates a plugin instance when a new text editor is opened
@@ -31,21 +33,28 @@ namespace EditorConfig.VisualStudio
         public void TextViewCreated(IWpfTextView view)
         {
             ITextDocument document;
-            if (!docFactory.TryGetTextDocument(view.TextDataModel.DocumentBuffer, out document))
+            if (!DocFactory.TryGetTextDocument(view.TextDataModel.DocumentBuffer, out document))
                 return;
 
-            DTE dte = (DTE)serviceProvider.GetService(typeof(DTE));
-            if (dte == null)
+            var app = (DTE)ServiceProvider.GetService(typeof(DTE));
+            if (app == null)
                 return;
 
-            if (messageList == null)
+            if (_messageList == null)
             {
-                messageList = new ErrorListProvider(serviceProvider);
-                messageList.ProviderGuid = new System.Guid("{6B4A6B64-EDA9-4078-A549-905ED7D6B8AA}");
-                messageList.ProviderName = "EditorConfig";
+                _messageList = new ErrorListProvider(ServiceProvider)
+                    {
+                        ProviderGuid = new Guid("{6B4A6B64-EDA9-4078-A549-905ED7D6B8AA}"),
+                        ProviderName = "EditorConfig"
+                    };
             }
 
-            new Plugin(view, document, dte, messageList);
+            _plugin = new Plugin(view, document, app, _messageList);
+        }
+
+        public void Dispose()
+        {
+            _plugin.Dispose();
         }
     }
 }
