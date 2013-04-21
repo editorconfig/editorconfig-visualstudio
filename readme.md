@@ -27,6 +27,8 @@ The plugin supports the following EditorConfig [properties](http://editorconfig.
 * indent_size
 * tab_width
 * end_of_line
+* trim_trailing_whitespace
+* insert_final_newline
 * root (only used by EditorConfig core)
 
 ## Reporting problems

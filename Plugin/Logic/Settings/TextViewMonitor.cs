@@ -1,13 +1,12 @@
+using EditorConfig.VisualStudio.Logic.Cleaning;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using System;
 
-namespace EditorConfig.VisualStudio.Integration
+namespace EditorConfig.VisualStudio.Logic.Settings
 {
-    using Settings;
-
     /// <summary>
     /// This plugin attaches to an editor instance and updates its settings at
     /// the appropriate times
@@ -17,18 +16,32 @@ namespace EditorConfig.VisualStudio.Integration
         private readonly IWpfTextView _view;
         private readonly ITextDocument _doc;
         private readonly Results _settings;
-        private readonly Loader _loader;
+        private readonly SettingsManager _settingsManager;
         private readonly GlobalSettings _globalSettings;
+        private readonly DTE _app;
 
         public TextViewMonitor(IWpfTextView view, ITextDocument document, DTE app, ErrorListProvider messageList)
         {
             _view = view;
             _doc = document;
-            _loader = new Loader(view, document, messageList);
-            _globalSettings = new GlobalSettings(view, app, _settings = _loader.Settings);
+            _app = app;
+            _settingsManager = new SettingsManager(view, document, messageList);
+            _settings = _settingsManager.Settings;
+
+            if (_settings != null)
+            {
+                _globalSettings = new GlobalSettings(view, app, _settings);
+                _view.GotAggregateFocus += ViewOnGotAggregateFocus;
+            }
 
             document.FileActionOccurred += FileActionOccurred;
             view.Closed += Closed;
+        }
+
+        private void ViewOnGotAggregateFocus(object sender, EventArgs eventArgs)
+        {
+            new InitialCleanup(_doc, _app, _settings).Execute();
+            _view.GotAggregateFocus -= ViewOnGotAggregateFocus;
         }
 
         /// <summary>
@@ -37,7 +50,7 @@ namespace EditorConfig.VisualStudio.Integration
         private void FileActionOccurred(object sender, TextDocumentFileActionEventArgs e)
         {
             if ((e.FileActionType & FileActionTypes.DocumentRenamed) != 0)
-                _loader.LoadSettings(e.FilePath);
+                _settingsManager.LoadSettings(e.FilePath);
 
             if (_settings != null && _view.HasAggregateFocus)
                 _globalSettings.Apply();
@@ -50,9 +63,10 @@ namespace EditorConfig.VisualStudio.Integration
 
         public void Dispose()
         {
-            _loader.Dispose();
+            _settingsManager.Dispose();
             _globalSettings.Dispose();
             _doc.FileActionOccurred -= FileActionOccurred;
+            _view.GotAggregateFocus -= ViewOnGotAggregateFocus;
             _view.Closed -= Closed;
         }
     }

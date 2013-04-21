@@ -8,6 +8,8 @@ using System.ComponentModel.Composition;
 
 namespace EditorConfig.VisualStudio.Integration.Events
 {
+    using Logic.Settings;
+
     /// <summary>
     /// Listens for editor-creation events and attaches a new plugin instance
     /// to each one. Visual Studio to magically instantiates this class and
@@ -44,7 +46,7 @@ namespace EditorConfig.VisualStudio.Integration.Events
             {
                 _messageList = new ErrorListProvider(ServiceProvider)
                     {
-                        ProviderGuid = new Guid(GuidList.GuidEditorConfigPkgString),
+                        ProviderGuid = Guids.GuidEditorConfigPackage,
                         ProviderName = "EditorConfig"
                     };
             }
@@ -55,6 +57,7 @@ namespace EditorConfig.VisualStudio.Integration.Events
         public void Dispose()
         {
             _monitor.Dispose();
+            _messageList.Dispose();
         }
     }
 }

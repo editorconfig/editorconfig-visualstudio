@@ -1,8 +1,11 @@
 # Release Notes
 
-## 0.3.1
+## 0.4.0
 
-* Restores global settings when document loses focus
+* Enforces settings on document open (i.e., trim trailing whitespace, fix line endings and fix mixed tabs/spaces).
+* Analyzes document for indent size trend and, if inconsistent, adjusts to fit settings.
+* Enforces settings before save (i.e., trim trailing whitespace, fix line endings and insert final newline).
+* Restores global settings when document loses focus.
 
 ## 0.3.0
 

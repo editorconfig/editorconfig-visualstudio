@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.Text.Editor;
 using System;
 using System.Collections.Generic;
 
-namespace EditorConfig.VisualStudio.Settings
+namespace EditorConfig.VisualStudio.Logic.Settings
 {
     using Helpers;
 

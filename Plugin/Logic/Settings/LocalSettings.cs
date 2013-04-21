@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.Text.Editor;
-using System.Text.RegularExpressions;
 
-namespace EditorConfig.VisualStudio.Settings
+namespace EditorConfig.VisualStudio.Logic.Settings
 {
     using Helpers;
 
@@ -9,8 +8,6 @@ namespace EditorConfig.VisualStudio.Settings
     {
         private readonly IWpfTextView _view;
         private readonly Results _settings;
-        private readonly Regex _cr = new Regex("^cr", RegexOptions.Compiled);
-        private readonly Regex _lf = new Regex("lf$", RegexOptions.Compiled);
 
         internal LocalSettings(IWpfTextView view, Results settings)
         {
@@ -42,9 +39,8 @@ namespace EditorConfig.VisualStudio.Settings
                 }
             }
 
-            if (!_settings.ContainsKey("end_of_line")) return;
-
-            var newline = _lf.Replace(_cr.Replace(_settings["end_of_line"], "\r"), "\n");
+            var newline = _settings.EndOfLine();
+            if (newline == null) return;
             options.SetOptionValue(DefaultOptions.NewLineCharacterOptionId, newline);
             options.SetOptionValue(DefaultOptions.ReplicateNewLineCharacterOptionId, false);
         }

@@ -3,9 +3,9 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using System;
 
-namespace EditorConfig.VisualStudio.Settings
+namespace EditorConfig.VisualStudio.Logic.Settings
 {
-    internal class Loader : IDisposable
+    internal class SettingsManager : IDisposable
     {
         internal Results Settings { get; private set; }
         private readonly IWpfTextView _view;
@@ -13,7 +13,7 @@ namespace EditorConfig.VisualStudio.Settings
         private readonly ErrorListProvider _messageList;
         private ErrorTask _message;
 
-        internal Loader(IWpfTextView view, ITextDocument document, ErrorListProvider messageList)
+        internal SettingsManager(IWpfTextView view, ITextDocument document, ErrorListProvider messageList)
         {
             _view = view;
             _messageList = messageList;
@@ -39,8 +39,7 @@ namespace EditorConfig.VisualStudio.Settings
             try
             {
                 Settings = Core.Parse(path);
-                if (_localSettings == null)
-                    _localSettings = new LocalSettings(_view, Settings);
+                _localSettings = new LocalSettings(_view, Settings);
                 _localSettings.Apply();
             }
             catch (ParseException e)
