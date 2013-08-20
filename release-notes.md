@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.3.1
+
+* Visual Studio 2013 support
+
 ## 0.2.6
 
 * Visual Studio 2012 support
