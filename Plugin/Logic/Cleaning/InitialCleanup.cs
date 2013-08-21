@@ -1,9 +1,9 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using EditorConfig.VisualStudio.Helpers;
+﻿using EditorConfig.VisualStudio.Helpers;
 using EnvDTE;
 using Microsoft.VisualStudio.Text;
+using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace EditorConfig.VisualStudio.Logic.Cleaning
 {
@@ -20,6 +20,7 @@ namespace EditorConfig.VisualStudio.Logic.Cleaning
     /// </remarks>
     internal class InitialCleanup
     {
+        private readonly Document _doc;
         private readonly TextDocument _textDoc;
         private readonly _DTE _ide;
         private readonly Results _settings;
@@ -41,10 +42,10 @@ namespace EditorConfig.VisualStudio.Logic.Cleaning
 
         internal InitialCleanup(ITextDocument textDocument, _DTE ide, Results settings)
         {
-            var doc = ide.Documents.OfType<Document>()
+            _doc = ide.Documents.OfType<Document>()
                 .FirstOrDefault(x => x.FullName == textDocument.FilePath);
-            if (doc != null)
-                _textDoc = (TextDocument) doc.Object("TextDocument");
+            if (_doc != null)
+                _textDoc = (TextDocument) _doc.Object("TextDocument");
             _ide = ide;
             _settings = settings;
             _eol = settings.EndOfLine();
@@ -55,8 +56,34 @@ namespace EditorConfig.VisualStudio.Logic.Cleaning
         /// </summary>
         internal void Execute()
         {
-            if (_textDoc == null) return;
+            if (_doc == null || _textDoc == null) return;
 
+            // Make sure the document to be cleaned up is active, required for some commands like format document.
+            _doc.Activate();
+
+            if (_ide.ActiveDocument != _doc)
+            {
+                OutputWindowHelper.WriteLine(_doc.Name + " did not complete activation before cleaning started.");
+            }
+
+            new UndoTransactionHelper(_ide, "EditorConfig Cleanup").Run(
+                delegate
+                {
+                    _ide.StatusBar.Text = String.Format("EditorConfig is cleaning '{0}'...", _doc.Name);
+
+                    RunInitialCleanup();
+
+                    _ide.StatusBar.Text = String.Format("EditorConfig cleaned '{0}'.", _doc.Name);
+                },
+                delegate(Exception ex)
+                {
+                    OutputWindowHelper.WriteLine(String.Format("EditorConfig stopped cleaning '{0}': {1}", _doc.Name, ex));
+                    _ide.StatusBar.Text = String.Format("EditorConfig stopped cleaning '{0}'.  See output window for more details.", _doc.Name);
+                });
+        }
+
+        private void RunInitialCleanup()
+        {
             TrimTrailingWhitespace();
             FixLineEndings();
 
@@ -137,20 +164,15 @@ namespace EditorConfig.VisualStudio.Logic.Cleaning
         /// </summary>
         private void FixLineEndings()
         {
-            if (UsePOSIXRegEx)
+            if (_eol == null)
             {
-                // Defer line ending cleanup until OnBeforeSave, as POSIX expressions give us no way to
-                // reliably change only the lines that are inconsistent.
                 return;
             }
-            switch (_eol)
+            for (var cursor = _textDoc.StartPoint.CreateEditPoint(); !cursor.AtEndOfDocument; cursor.LineDown())
             {
-                case @"\n":
-                    _textDoc.SubstituteAllStringMatches(@"\r", string.Empty);
-                    break;
-                case @"\r\n":
-                    _textDoc.SubstituteAllStringMatches(@"(?<!\r)\n", _eol);
-                    break;
+                cursor.EndOfLine();
+                if (cursor.GetText(1) != _eol)
+                    cursor.ReplaceText(1, _eol, 0);
             }
         }
 

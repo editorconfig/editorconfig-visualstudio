@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using EnvDTE;
+﻿using EnvDTE;
 using System;
 using System.Text.RegularExpressions;
 
@@ -49,7 +48,7 @@ namespace EditorConfig.VisualStudio.Logic.Cleaning
         {
             _package = package;
 
-            _undoTransactionHelper = new UndoTransactionHelper(_package, "EditorConfig Cleanup");
+            _undoTransactionHelper = new UndoTransactionHelper(_package.IDE, "EditorConfig Cleanup");
 
             _codeCleanupAvailabilityLogic = CodeCleanupAvailabilityLogic.GetInstance(_package);
         }
@@ -110,7 +109,6 @@ namespace EditorConfig.VisualStudio.Logic.Cleaning
             if (settings.TryKeyAsBool("trim_trailing_whitespace"))
                 TrimTrailingWhitespace(doc);
 
-            if (!_package.UsePOSIXRegEx) return;
             var eol = settings.EndOfLine();
             FixLineEndings(doc, eol);
         }
@@ -153,34 +151,15 @@ namespace EditorConfig.VisualStudio.Logic.Cleaning
         /// <param name="eol">The line ending to enforce.</param>
         internal void FixLineEndings(TextDocument doc, string eol)
         {
-            if (!_package.UsePOSIXRegEx)
+            if (eol == null)
             {
-                switch (eol)
-                {
-                    case @"\n":
-                        foreach (var cursor in doc.FindMatches(@"\r\n"))
-                            cursor.Delete(1);
-                        break;
-                    case @"\r\n":
-                        foreach (var cursor in doc.FindMatches(@"\n"))
-                            cursor.Insert(@"\r");
-                        break;
-                }
                 return;
             }
-
-            // POSIX expressions are unable to distinguish between different line ending types. This slower method,
-            // using a line-by-line operation, is required to edit inconsistent line endings only; thus,
-            // maintaining an accurate dirty state on the document.
-            var firstEolChar = eol.ToCharArray()[0].ToString(CultureInfo.InvariantCulture);
             for (var cursor = doc.StartPoint.CreateEditPoint(); !cursor.AtEndOfDocument; cursor.LineDown())
             {
                 cursor.EndOfLine();
-                if (cursor.GetText(1) == firstEolChar) continue;
-                if (eol == @"\n")
-                    cursor.Delete(1);
-                else
-                    cursor.Insert(@"\r");
+                if (cursor.GetText(1) != eol)
+                    cursor.ReplaceText(1, eol, 0);
             }
         }
 

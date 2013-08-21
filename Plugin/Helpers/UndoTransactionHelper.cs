@@ -1,4 +1,5 @@
 ﻿using System;
+using EnvDTE;
 
 namespace EditorConfig.VisualStudio.Helpers
 {
@@ -9,7 +10,7 @@ namespace EditorConfig.VisualStudio.Helpers
     {
         #region Fields
 
-        private readonly EditorConfigPackage _package;
+        private readonly _DTE _ide;
         private readonly string _transactionName;
 
         #endregion Fields
@@ -21,9 +22,9 @@ namespace EditorConfig.VisualStudio.Helpers
         /// </summary>
         /// <param name="package">The hosting package.</param>
         /// <param name="transactionName">The name of the transaction.</param>
-        public UndoTransactionHelper(EditorConfigPackage package, string transactionName)
+        public UndoTransactionHelper(_DTE package, string transactionName)
         {
-            _package = package;
+            _ide = package.DTE;
             _transactionName = transactionName;
         }
 
@@ -61,9 +62,9 @@ namespace EditorConfig.VisualStudio.Helpers
         {
             // Start an undo transaction (unless inside one already or other undo conditions are not met).
             var shouldCloseUndoContext = false;
-            if (!_package.IDE.UndoContext.IsOpen && undoConditions())
+            if (!_ide.UndoContext.IsOpen && undoConditions())
             {
-                _package.IDE.UndoContext.Open(_transactionName);
+                _ide.UndoContext.Open(_transactionName);
                 shouldCloseUndoContext = true;
             }
 
@@ -76,7 +77,7 @@ namespace EditorConfig.VisualStudio.Helpers
                 catchAction(ex);
 
                 if (!shouldCloseUndoContext) return;
-                _package.IDE.UndoContext.SetAborted();
+                _ide.UndoContext.SetAborted();
                 shouldCloseUndoContext = false;
             }
             finally
@@ -84,7 +85,7 @@ namespace EditorConfig.VisualStudio.Helpers
                 // Always close the undo transaction to prevent ongoing interference with the IDE.
                 if (shouldCloseUndoContext)
                 {
-                    _package.IDE.UndoContext.Close();
+                    _ide.UndoContext.Close();
                 }
             }
         }
