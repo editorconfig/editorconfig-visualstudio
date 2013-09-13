@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="6b4a6b64-eda9-4078-a549-905ed7d6b8aa" Version="0.4.0" Language="en-US" Publisher="EditorConfig Team" />
+        <Identity Id="6b4a6b64-eda9-4078-a549-905ed7d6b8aa" Version="0.4.1" Language="en-US" Publisher="EditorConfig Team" />
         <DisplayName>EditorConfig</DisplayName>
         <Description xml:space="preserve">Loads editor options such as indentation sizes from standard, cross-platform .editorconfig files.</Description>
         <MoreInfo>http://editorconfig.org/</MoreInfo>

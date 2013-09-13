@@ -86,64 +86,6 @@ namespace EditorConfig.VisualStudio.Logic.Cleaning
         {
             TrimTrailingWhitespace();
             FixLineEndings();
-
-            if (!_settings.ContainsKey("indent_style")) return;
-            var indentStyle = _settings["indent_style"];
-
-            var indentSize = 0;
-            if (indentStyle == "tab" || !_settings.IfHasKeyTrySetting("indent_size", i => indentSize = i))
-            {
-                FixIndentStyle(indentStyle);
-                return;
-            }
-
-            var indentSizeTrend = AnalyzeIndentSizeTrend(indentSize);
-            if (indentSize == indentSizeTrend)
-            {
-                FixIndentStyle(indentStyle);
-                return;
-            }
-
-            FixIndentStyle(indentStyle);
-
-            if (indentStyle == "space")
-                FixIndentSize(indentSizeTrend, indentSize);
-        }
-
-        /// <summary>
-        /// Modifies indentation with spaces to match that of the current settings.
-        /// </summary>
-        /// <param name="indentSizeTrend">The current document's indent size trend.</param>
-        /// <param name="indentSizeSetting">The indent size EditorConfig setting.</param>
-        private void FixIndentSize(int indentSizeTrend, int indentSizeSetting)
-        {
-            var pattern = string.Format(@"^( {{{0}}})+", indentSizeTrend);
-            var leadingSpaces = new Regex(pattern, RegexOptions.Compiled);
-            foreach (var cursor in _textDoc.FindMatches(pattern))
-            {
-                var line = cursor.GetLine();
-                var numberOfSpaces = leadingSpaces.Match(line).Length;
-                var replaceWith = new string(
-                    ' ', (int) Math.Ceiling(numberOfSpaces*(indentSizeSetting/(float) indentSizeTrend)));
-                cursor.ReplaceText(numberOfSpaces, replaceWith, (int)vsFindOptions.vsFindOptionsFromStart);
-            }
-        }
-
-        /// <summary>
-        /// Tabifies or untabifies the entire active document, according to the EditorConfig indent_style setting.
-        /// </summary>
-        private void FixIndentStyle(string indentStyle)
-        {
-            switch (indentStyle)
-            {
-                case "tab":
-                    SelectAllAndExecuteCommand("Edit.TabifySelectedLines");
-                    break;
-
-                case "space":
-                    SelectAllAndExecuteCommand("Edit.UntabifySelectedLines");
-                    break;
-            }
         }
 
         /// <summary>
