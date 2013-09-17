@@ -17,21 +17,29 @@ namespace EditorConfig.VisualStudio
         DTE dte;
         ErrorListProvider messageList;
         ErrorTask message;
-        FileSettings settings;
+        private readonly IViewSettingsContainer viewSettingsContainer;
 
-        public Plugin(IWpfTextView view, ITextDocument document, DTE dte, ErrorListProvider messageList)
+        FileSettings settings;
+        private string documentPath;
+
+        public Plugin(IWpfTextView view, ITextDocument document, DTE dte,
+            ErrorListProvider messageList, IViewSettingsContainer viewSettingsContainer)
         {
             this.view = view;
             this.document = document;
             this.dte = dte;
             this.messageList = messageList;
             this.message = null;
+            this.viewSettingsContainer = viewSettingsContainer;
 
             document.FileActionOccurred += FileActionOccurred;
             view.GotAggregateFocus += GotAggregateFocus;
             view.Closed += Closed;
 
-            LoadSettings(document.FilePath);
+            documentPath = document.FilePath;
+
+            LoadSettings(documentPath);
+            viewSettingsContainer.Register(documentPath, view, settings);
         }
 
         /// <summary>
@@ -39,8 +47,13 @@ namespace EditorConfig.VisualStudio
         /// </summary>
         void FileActionOccurred(object sender, TextDocumentFileActionEventArgs e)
         {
-            if ((e.FileActionType & FileActionTypes.DocumentRenamed) != 0)
-                LoadSettings(e.FilePath);
+            if (!e.FileActionType.HasFlag(FileActionTypes.DocumentRenamed))
+                return;
+
+            LoadSettings(e.FilePath);
+            viewSettingsContainer.Update(documentPath, e.FilePath ,settings);
+
+            documentPath = e.FilePath;
 
             if (settings != null && view.HasAggregateFocus)
                 ApplyGlobalSettings();
@@ -61,6 +74,7 @@ namespace EditorConfig.VisualStudio
         void Closed(object sender, EventArgs e)
         {
             ClearMessage();
+            viewSettingsContainer.Unregister(documentPath);
 
             document.FileActionOccurred -= FileActionOccurred;
             view.GotAggregateFocus -= GotAggregateFocus;
