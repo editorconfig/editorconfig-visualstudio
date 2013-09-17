@@ -17,7 +17,7 @@ namespace EditorConfig.VisualStudio
         DTE dte;
         ErrorListProvider messageList;
         ErrorTask message;
-        Results settings;
+        FileSettings settings;
 
         public Plugin(IWpfTextView view, ITextDocument document, DTE dte, ErrorListProvider messageList)
         {
@@ -83,7 +83,7 @@ namespace EditorConfig.VisualStudio
 
             try
             {
-                settings = Core.Parse(path);
+                settings = new FileSettings(Core.Parse(path));
                 ApplyLocalSettings();
             }
             catch (ParseException e)
@@ -102,54 +102,30 @@ namespace EditorConfig.VisualStudio
         private void ApplyLocalSettings()
         {
             IEditorOptions options = view.Options;
-            
-            if (settings.ContainsKey("tab_width"))
+
+            if (settings.TabWidth != null)
             {
-                try
-                {
-                    int value = Convert.ToInt32(settings["tab_width"]);
-                    options.SetOptionValue<int>(DefaultOptions.TabSizeOptionId, value);
-                }
-                catch { }
+                int value = settings.TabWidth.Value;
+                options.SetOptionValue<int>(DefaultOptions.TabSizeOptionId, value);
             }
 
-            if (settings.ContainsKey("indent_size"))
+            if (settings.IndentSize != null)
             {
-                try
-                {
-                    int value = Convert.ToInt32(settings["indent_size"]);
-                    options.SetOptionValue<int>(DefaultOptions.IndentSizeOptionId, value);
-                }
-                catch { }
+                int value = settings.IndentSize.Value;
+                options.SetOptionValue<int>(DefaultOptions.IndentSizeOptionId, value);
             }
 
-            if (settings.ContainsKey("indent_style"))
+            if (settings.ConvertTabsToSpaces != null)
             {
-                string value = settings["indent_style"];
-                if (value == "tab")
-                    options.SetOptionValue<bool>(DefaultOptions.ConvertTabsToSpacesOptionId, false);
-                else if (value == "space")
-                    options.SetOptionValue<bool>(DefaultOptions.ConvertTabsToSpacesOptionId, true);
+                bool value = settings.ConvertTabsToSpaces.Value;
+                options.SetOptionValue<bool>(DefaultOptions.ConvertTabsToSpacesOptionId, value);
             }
 
-            if (settings.ContainsKey("end_of_line"))
+            if (settings.EndOfLine != null)
             {
-                string value = settings["end_of_line"];
-                if (value == "lf")
-                {
-                    options.SetOptionValue<string>(DefaultOptions.NewLineCharacterOptionId, "\n");
-                    options.SetOptionValue<bool>(DefaultOptions.ReplicateNewLineCharacterOptionId, false);
-                }
-                else if (value == "cr")
-                {
-                    options.SetOptionValue<string>(DefaultOptions.NewLineCharacterOptionId, "\r");
-                    options.SetOptionValue<bool>(DefaultOptions.ReplicateNewLineCharacterOptionId, false);
-                }
-                else if (value == "crlf")
-                {
-                    options.SetOptionValue<string>(DefaultOptions.NewLineCharacterOptionId, "\r\n");
-                    options.SetOptionValue<bool>(DefaultOptions.ReplicateNewLineCharacterOptionId, false);
-                }
+                string value = settings.EndOfLine;
+                options.SetOptionValue<string>(DefaultOptions.NewLineCharacterOptionId, value);
+                options.SetOptionValue<bool>(DefaultOptions.ReplicateNewLineCharacterOptionId, false);
             }
         }
 
@@ -163,11 +139,11 @@ namespace EditorConfig.VisualStudio
         /// </summary>
         private void ApplyGlobalSettings()
         {
-            EnvDTE.Properties props;
+            Properties props;
             try
             {
                 string type = view.TextDataModel.ContentType.TypeName;
-                props = dte.get_Properties("TextEditor", type);
+                props = dte.Properties["TextEditor", type];
             }
             catch
             {
@@ -176,33 +152,22 @@ namespace EditorConfig.VisualStudio
                 return;
             }
 
-            if (settings.ContainsKey("tab_width"))
+            if (settings.TabWidth != null)
             {
-                try
-                {
-                    int value = Convert.ToInt32(settings["tab_width"]);
-                    props.Item("TabSize").Value = value;
-                }
-                catch { }
+                int value = settings.TabWidth.Value;
+                props.Item("TabSize").Value = value;
             }
 
-            if (settings.ContainsKey("indent_size"))
+            if (settings.IndentSize != null)
             {
-                try
-                {
-                    int value = Convert.ToInt32(settings["indent_size"]);
-                    props.Item("IndentSize").Value = value;
-                }
-                catch { }
+                int value = settings.IndentSize.Value;
+                props.Item("IndentSize").Value = value;
             }
 
-            if (settings.ContainsKey("indent_style"))
+            if (settings.ConvertTabsToSpaces != null)
             {
-                string value = settings["indent_style"];
-                if (value == "tab")
-                    props.Item("InsertTabs").Value = true;
-                else if (value == "space")
-                    props.Item("InsertTabs").Value = false;
+                bool value = settings.ConvertTabsToSpaces.Value;
+                props.Item("InsertTabs").Value = value;
             }
         }
 
