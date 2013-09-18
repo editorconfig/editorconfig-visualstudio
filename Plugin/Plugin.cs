@@ -13,6 +13,7 @@ namespace EditorConfig.VisualStudio
     internal class Plugin
     {
         IWpfTextView view;
+        ITextDocument document;
         DTE dte;
         ErrorListProvider messageList;
         ErrorTask message;
@@ -21,6 +22,7 @@ namespace EditorConfig.VisualStudio
         public Plugin(IWpfTextView view, ITextDocument document, DTE dte, ErrorListProvider messageList)
         {
             this.view = view;
+            this.document = document;
             this.dte = dte;
             this.messageList = messageList;
             this.message = null;
@@ -59,6 +61,10 @@ namespace EditorConfig.VisualStudio
         void Closed(object sender, EventArgs e)
         {
             ClearMessage();
+
+            document.FileActionOccurred -= FileActionOccurred;
+            view.GotAggregateFocus -= GotAggregateFocus;
+            view.Closed -= Closed;
         }
 
         /// <summary>
