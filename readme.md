@@ -12,7 +12,7 @@ To build this software, first download and build the [EditorConfig core library]
 
     git submodule update --init
 
-Follow the build instructions for the core library as normal, but include the `-DMSVC_MD=ON` option when invoking CMake:
+Follow the [build instructions](https://github.com/editorconfig/editorconfig-core-c/blob/master/INSTALL.md#installing-from-source) for the core library as normal, but include the `-DMSVC_MD=ON` option when invoking CMake:
 
     cd Core/
     cmake . -DMSVC_MD=ON
