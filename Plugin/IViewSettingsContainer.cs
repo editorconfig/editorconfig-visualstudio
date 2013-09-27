@@ -6,7 +6,7 @@ namespace EditorConfig.VisualStudio
     internal interface IViewSettingsContainer
     {
         void Register(string filepath, IWpfTextView view, FileSettings settings);
-        void Unregister(string filepath);
-        void Update(string oldFilepath, string newFilePath, FileSettings newSettings);
+        void Unregister(string filepath, IWpfTextView view);
+        void Update(string oldFilepath, string newFilePath, IWpfTextView view, FileSettings newSettings);
     }
 }

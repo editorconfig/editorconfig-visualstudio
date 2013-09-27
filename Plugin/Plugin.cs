@@ -51,7 +51,7 @@ namespace EditorConfig.VisualStudio
                 return;
 
             LoadSettings(e.FilePath);
-            viewSettingsContainer.Update(documentPath, e.FilePath ,settings);
+            viewSettingsContainer.Update(documentPath, e.FilePath, view, settings);
 
             documentPath = e.FilePath;
 
@@ -74,7 +74,7 @@ namespace EditorConfig.VisualStudio
         void Closed(object sender, EventArgs e)
         {
             ClearMessage();
-            viewSettingsContainer.Unregister(documentPath);
+            viewSettingsContainer.Unregister(documentPath, view);
 
             document.FileActionOccurred -= FileActionOccurred;
             view.GotAggregateFocus -= GotAggregateFocus;

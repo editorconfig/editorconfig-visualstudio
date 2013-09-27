@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -10,7 +11,7 @@ namespace EditorConfig.VisualStudio
 {
     internal class SaveListener : ListenerBase, IViewSettingsContainer, IDisposable
     {
-        private readonly Dictionary<string, Tuple<IWpfTextView, FileSettings>> views = new Dictionary<string, Tuple<IWpfTextView, FileSettings>>();
+        private readonly Dictionary<string, ViewsSettings> views = new Dictionary<string, ViewsSettings>();
 
         private readonly IVsRunningDocumentTable _rdt;
         private readonly uint _pdwCookie;
@@ -83,8 +84,8 @@ namespace EditorConfig.VisualStudio
 
         private void ApplySettings(string filepath)
         {
-            Tuple<IWpfTextView, FileSettings> tuple;
-            if (!views.TryGetValue(filepath, out tuple))
+            ViewsSettings viewsSettings;
+            if (!views.TryGetValue(filepath, out viewsSettings))
             {
                 // This view isn't monitored by the Plugin
                 // For instance, this will occur when working with
@@ -92,29 +93,71 @@ namespace EditorConfig.VisualStudio
                 return;
             }
 
-            SettingsViewApplier.Update(tuple.Item1, tuple.Item2);
+            SettingsViewApplier.Update(viewsSettings.Views.First(), viewsSettings.Settings);
         }
 
         public void Register(string filepath, IWpfTextView view, FileSettings settings)
         {
-            Debug.Assert(!views.ContainsKey(filepath));
+            ViewsSettings viewsSettings;
 
-            views.Add(filepath, new Tuple<IWpfTextView, FileSettings>(view, settings));
+            if (!views.TryGetValue(filepath, out viewsSettings))
+            {
+                viewsSettings = new ViewsSettings(view, settings);
+                views.Add(filepath, viewsSettings);
+            }
+            else
+            {
+                Debug.Assert(!viewsSettings.Views.Contains(view));
+
+                viewsSettings.Views.Add(view);
+            }
         }
 
-        public void Unregister(string filepath)
+        public void Unregister(string filepath, IWpfTextView view)
         {
             Debug.Assert(views.ContainsKey(filepath));
 
-            views.Remove(filepath);
+            ViewsSettings viewsSettings;
+
+            if (views.TryGetValue(filepath, out viewsSettings))
+            {
+                Debug.Assert(viewsSettings.Views.Contains(view));
+
+                viewsSettings.Views.Remove(view);
+
+                if (viewsSettings.Views.Count == 0)
+                {
+                    views.Remove(filepath);
+                }
+            }
         }
 
-        public void Update(string oldFilepath, string newFilePath, FileSettings newSettings)
+        public void Update(string oldFilepath, string newFilePath, IWpfTextView view, FileSettings newSettings)
         {
-            var view = views[oldFilepath].Item1;
-
-            Unregister(oldFilepath);
+            Unregister(oldFilepath, view);
             Register(newFilePath, view, newSettings);
+        }
+
+        private class ViewsSettings
+        {
+            public HashSet<IWpfTextView> Views
+            {
+                get;
+                private set;
+            }
+
+            public FileSettings Settings
+            {
+                get;
+                private set;
+            }
+
+            public ViewsSettings(IWpfTextView view, FileSettings settings)
+            {
+                Settings = settings;
+                Views = new HashSet<IWpfTextView>();
+                Views.Add(view);
+            }
         }
     }
 }
