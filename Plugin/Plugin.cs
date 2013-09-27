@@ -180,7 +180,7 @@ namespace EditorConfig.VisualStudio
 
             if (settings.ConvertTabsToSpaces != null)
             {
-                bool value = settings.ConvertTabsToSpaces.Value;
+                bool value = !settings.ConvertTabsToSpaces.Value;
                 props.Item("InsertTabs").Value = value;
             }
         }
