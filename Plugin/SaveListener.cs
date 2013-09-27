@@ -117,18 +117,15 @@ namespace EditorConfig.VisualStudio
         {
             Debug.Assert(views.ContainsKey(filepath));
 
-            ViewsSettings viewsSettings;
+            ViewsSettings viewsSettings = views[filepath];
 
-            if (views.TryGetValue(filepath, out viewsSettings))
+            Debug.Assert(viewsSettings.Views.Contains(view));
+
+            viewsSettings.Views.Remove(view);
+
+            if (viewsSettings.Views.Count == 0)
             {
-                Debug.Assert(viewsSettings.Views.Contains(view));
-
-                viewsSettings.Views.Remove(view);
-
-                if (viewsSettings.Views.Count == 0)
-                {
-                    views.Remove(filepath);
-                }
+                views.Remove(filepath);
             }
         }
 
