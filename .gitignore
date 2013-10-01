@@ -3,6 +3,7 @@
 *.suo
 *.user
 *.ncrunchsolution
+*.tss
 [Dd]ebug
 [Rr]elease
 bin

@@ -9,10 +9,9 @@ namespace EditorConfig.VisualStudio
     {
         public static void Update(IWpfTextView view, FileSettings settings)
         {
-            if (settings.InsertFinalNewLine.HasValue
-                && settings.InsertFinalNewLine.Value)
+            if (settings.InsertFinalNewLine.HasValue)
             {
-                EnsureTrailingNewLine(view);
+                ApplyFinalNewLineSettings(view, settings);
             }
 
             if (settings.TrimTrailingWhitespace.HasValue
@@ -79,7 +78,7 @@ namespace EditorConfig.VisualStudio
             }
         }
 
-        private static void EnsureTrailingNewLine(IWpfTextView view)
+        private static void ApplyFinalNewLineSettings(IWpfTextView view, FileSettings settings)
         {
             ITextSnapshot snapshot = view.TextSnapshot;
             var lineCount = snapshot.LineCount;
@@ -89,15 +88,30 @@ namespace EditorConfig.VisualStudio
                 return;
             }
 
-            ITextSnapshotLine line = snapshot.GetLineFromLineNumber(lineCount - 1);
-            if (line.Length == 0)
-            {
-                return;
-            }
+            var newlineCharLength = view.Options.GetNewLineCharacter().Length;
 
             using (var edit = snapshot.TextBuffer.CreateEdit())
             {
-                edit.Insert(snapshot.Length, view.Options.GetNewLineCharacter());
+                for (int i = lineCount - 1; i >= 0; i--)
+                {
+                    ITextSnapshotLine line = snapshot.GetLineFromLineNumber(i);
+
+                    int length = line.Length;
+
+                    //if this line has a length we are no longer dealing with 
+                    //trailing newlines
+                    if (length != 0)
+                        break;
+
+                    string content = line.GetText();
+
+                    int pos = length;
+
+                    edit.Delete(line.Start.Position - newlineCharLength, newlineCharLength);
+                }
+                if (settings.InsertFinalNewLine.Value)
+                    edit.Insert(edit.Snapshot.Length, view.Options.GetNewLineCharacter());
+
                 edit.Apply();
             }
         }
