@@ -103,10 +103,6 @@ namespace EditorConfig.VisualStudio
                     if (length != 0)
                         break;
 
-                    string content = line.GetText();
-
-                    int pos = length;
-
                     edit.Delete(line.Start.Position - newlineCharLength, newlineCharLength);
                 }
                 if (settings.InsertFinalNewLine.Value)
