@@ -11,7 +11,7 @@ namespace EditorConfig.VisualStudio
         {
             if (settings.InsertFinalNewLine.HasValue)
             {
-                ApplyFinalNewLineSettings(view, settings);
+                ApplyFinalNewLineSettings(view, settings.InsertFinalNewLine.Value);
             }
 
             if (settings.TrimTrailingWhitespace.HasValue
@@ -78,7 +78,7 @@ namespace EditorConfig.VisualStudio
             }
         }
 
-        private static void ApplyFinalNewLineSettings(IWpfTextView view, FileSettings settings)
+        private static void ApplyFinalNewLineSettings(IWpfTextView view, bool insertFinalNewLine)
         {
             ITextSnapshot snapshot = view.TextSnapshot;
             var lineCount = snapshot.LineCount;
@@ -105,7 +105,7 @@ namespace EditorConfig.VisualStudio
 
                     edit.Delete(line.Start.Position - newlineCharLength, newlineCharLength);
                 }
-                if (settings.InsertFinalNewLine.Value)
+                if (insertFinalNewLine)
                     edit.Insert(edit.Snapshot.Length, view.Options.GetNewLineCharacter());
 
                 edit.Apply();
