@@ -31,10 +31,6 @@ The plugin supports the following EditorConfig [properties](http://editorconfig.
 * trim_trailing_whitespace
 * root (only used by EditorConfig core)
 
-## Usage note:
-
-You should set `tab_width` not just `indent_style` if you want to replace tabs with spaces in Visual Studio.
-
 ## Reporting problems
 
 If you encounter any problems, feel free to report them at the central EditorConfig [issue tracker](https://github.com/editorconfig/editorconfig/issues).
