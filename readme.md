@@ -12,12 +12,12 @@ To build this software, first download and build the [EditorConfig core library]
 
     git submodule update --init
 
-Follow the build instructions for the core library as normal, but include the `-DMSVC_MD=ON` option when invoking CMake:
+Follow the [build instructions](https://github.com/editorconfig/editorconfig-core-c/blob/master/INSTALL.md#installing-from-source) for the core library as normal, but include the `-DMSVC_MD=ON` option when invoking CMake:
 
     cd Core/
     cmake . -DMSVC_MD=ON
 
-Once the core library is built, open the solution file `EditorConfigVS.sln` and compile the plugin. You may need to install the [Visual Studio SDK](https://www.microsoft.com/en-us/download/details.aspx?displaylang=en&id=2680) for this to work. The resulting plugin is named `Plugin/bin/(Debug|Release)/EditorConfigPlugin.vsix`, and double-clicking installs it into Visual Studio.
+Once the core library is built, open the solution file `EditorConfigVS.sln` and compile the plugin. You may need to install the [Visual Studio SDK](http://www.microsoft.com/en-us/download/details.aspx?id=21835) for this to work. The resulting plugin is named `Plugin/bin/(Debug|Release)/EditorConfigPlugin.vsix`, and double-clicking installs it into Visual Studio.
 
 ## Supported properties
 
@@ -27,6 +27,8 @@ The plugin supports the following EditorConfig [properties](http://editorconfig.
 * indent_size
 * tab_width
 * end_of_line
+* insert_final_newline
+* trim_trailing_whitespace
 * root (only used by EditorConfig core)
 
 ## Usage note:

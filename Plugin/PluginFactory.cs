@@ -45,7 +45,7 @@ namespace EditorConfig.VisualStudio
                 messageList.ProviderName = "EditorConfig";
             }
 
-            new Plugin(view, document, dte, messageList);
+            new Plugin(view, document, dte, messageList, PluginPackage.ViewSettingsContainer);
         }
     }
 }
