@@ -8,6 +8,7 @@
     <Locale>1033</Locale>
     <MoreInfoUrl>http://editorconfig.org/</MoreInfoUrl>
     <License>..\LICENSE</License>
+    <Icon>logo.png</Icon>
     <SupportedProducts>
       <VisualStudio Version="10.0">
         <Edition>Ultimate</Edition>
