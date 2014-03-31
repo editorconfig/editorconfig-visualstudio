@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.3.2
+
+* Bug fixes
+
 ## 0.3.1
 
 * Visual Studio 2013 support
