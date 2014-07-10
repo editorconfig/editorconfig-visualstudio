@@ -54,6 +54,7 @@ namespace EditorConfig.VisualStudio
 
                     int length = line.Length;
 
+                    // How long is a whitespace-only line?
                     if (length == 0)
                     {
                         continue;
@@ -72,6 +73,7 @@ namespace EditorConfig.VisualStudio
                         continue;
                     }
 
+                    // What is the start position of a whitespace-only line?
                     edit.Delete(line.Start.Position + pos + 1, length - 1 - pos);
                 }
 
