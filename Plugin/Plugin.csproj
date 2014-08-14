@@ -50,6 +50,13 @@
     <DeployExtension>True</DeployExtension>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Classify\EditorClassifierClassifierProvider.cs" />
+    <Compile Include="Classify\EditorConfigClassifier.cs" />
+    <Compile Include="Completion\CompletionItem.cs" />
+    <Compile Include="Completion\EditorConfigCompletionController.cs" />
+    <Compile Include="Completion\EditorConfigCompletionSource.cs" />
+    <Compile Include="ContentType\EditorConfigContentTypeDefinition.cs" />
+    <Compile Include="EditorConfigTextViewCreationListener.cs" />
     <Compile Include="ListenerBase.cs" />
     <Compile Include="FileSettings.cs" />
     <Compile Include="IViewSettingsContainer.cs" />
@@ -60,6 +67,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaveListener.cs" />
     <Compile Include="SettingsViewApplier.cs" />
+    <Compile Include="Validation\EditorConfigErrorTag.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\LICENSE">
@@ -84,12 +92,18 @@
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.9.0" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.10.0" />
+    <Reference Include="Microsoft.VisualStudio.TextManager.Interop" />
     <Reference Include="Microsoft.VisualStudio.Text.Data" />
     <Reference Include="Microsoft.VisualStudio.Text.Logic" />
     <Reference Include="Microsoft.VisualStudio.Text.UI" />
     <Reference Include="Microsoft.VisualStudio.Text.UI.Wpf" />
+    <Reference Include="Microsoft.VisualStudio.Language.Intellisense" />
+    <Reference Include="Microsoft.VisualStudio.Language.StandardClassification" />
+    <Reference Include="Microsoft.VisualStudio.Editor" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Wrapper\Wrapper.vcxproj">
