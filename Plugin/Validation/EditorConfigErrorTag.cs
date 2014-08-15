@@ -29,16 +29,17 @@ namespace EditorConfig.VisualStudio.Validation
             if (buffer == null)
                 throw new ArgumentException("Buffer is null");
 
-            var errorlist = buffer.Properties.GetProperty(typeof(ErrorListProvider)) as ErrorListProvider;
-            var view = buffer.Properties.GetProperty(typeof(IWpfTextView)) as IWpfTextView;
-
+            IWpfTextView view;
+            ErrorListProvider errorlist;
             ITextDocument document;
-            if (TextDocumentFactoryService.TryGetTextDocument(buffer, out document) && errorlist != null)
+            if (!buffer.Properties.TryGetProperty(typeof(ErrorListProvider), out errorlist) ||
+                !buffer.Properties.TryGetProperty(typeof(IWpfTextView), out view) ||
+                !TextDocumentFactoryService.TryGetTextDocument(buffer, out document))
             {
-                return new CheckTextErrorTagger(view, _classifierAggregatorService, errorlist, document) as ITagger<T>;
+                return null;
             }
 
-            return null;
+            return new CheckTextErrorTagger(view, _classifierAggregatorService, errorlist, document) as ITagger<T>;
         }
     }
 
