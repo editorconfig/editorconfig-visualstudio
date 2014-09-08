@@ -62,7 +62,7 @@ namespace EditorConfig.VisualStudio
                     string content = line.GetText();
 
                     int pos = length - 1;
-                    while (IsWhiteSpace(content[pos]))
+                    while ( pos >= 0 && IsWhiteSpace(content[pos]))
                     {
                         pos --;
                     }
