@@ -17,7 +17,7 @@ Follow the [build instructions](https://github.com/editorconfig/editorconfig-cor
     cd Core/
     cmake . -DMSVC_MD=ON
 
-Once the core library is built, open the solution file `EditorConfigVS.sln` and compile the plugin. You may need to install the [Visual Studio SDK](http://www.microsoft.com/en-us/download/details.aspx?id=21835) for this to work. The resulting plugin is named `Plugin/bin/(Debug|Release)/EditorConfigPlugin.vsix`, and double-clicking installs it into Visual Studio.
+Once the core library is built, open the solution file `EditorConfig.VisualStudio.sln` and compile the plugin. You may need to install the [Visual Studio SDK](http://www.microsoft.com/en-us/download/details.aspx?id=21835) for this to work. The resulting plugin is named `Plugin/bin/(Debug|Release)/EditorConfigPlugin.vsix`, and double-clicking installs it into Visual Studio.
 
 ## Supported properties
 
