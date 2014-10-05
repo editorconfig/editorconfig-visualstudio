@@ -17,7 +17,12 @@ Follow the [build instructions](https://github.com/editorconfig/editorconfig-cor
     cd Core/
     cmake . -DMSVC_MD=ON
 
-Once the core library is built, open the solution file `EditorConfig.VisualStudio.sln` and compile the plugin. You may need to install the [Visual Studio SDK](http://www.microsoft.com/en-us/download/details.aspx?id=21835) for this to work. The resulting plugin is named `Plugin/bin/(Debug|Release)/EditorConfigPlugin.vsix`, and double-clicking installs it into Visual Studio.
+Once the core library is built, open the solution file `EditorConfig.VisualStudio.sln` and compile the plugin. 
+
+You will need to install the [Visual Studio 2010 SDK](http://www.microsoft.com/en-us/download/confirmation.aspx?id=2680) explicitly
+since its the last version built against .NET 4.0 and some referenced assemblies might resolve the later SDK requiring .NET 4.5.
+
+The resulting plugin is named `Plugin/bin/(Debug|Release)/EditorConfigPlugin.vsix`, and double-clicking installs it into Visual Studio.
 
 ## Supported properties
 
