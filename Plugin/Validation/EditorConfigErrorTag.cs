@@ -72,10 +72,6 @@ namespace EditorConfig.VisualStudio.Validation
                 if (cspan.ClassificationType.IsOfType(PredefinedClassificationTypeNames.SymbolDefinition))
                 {
                     property = cspan.Span.GetText();
-                    CompletionItem item = CompletionItem.GetCompletionItem(property);
-
-                    if (item == null)
-                        yield return CreateError(line, cspan, "\"" + property + "\" is not a valid .editorconfig property"); ;
                 }
                 else if (cspan.ClassificationType.IsOfType(PredefinedClassificationTypeNames.Literal))
                 {
