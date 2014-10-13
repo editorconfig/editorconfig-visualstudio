@@ -20,6 +20,11 @@ namespace EditorConfig.VisualStudio
             {
                 TrimTrailingWhitespace(view);
             }
+
+            if (settings.EndOfLine != null)
+            {
+                EnsureEndOfLine(view, settings.EndOfLine);
+            }
         }
 
         private static bool IsWhiteSpace(Char c)
@@ -98,6 +103,34 @@ namespace EditorConfig.VisualStudio
             using (var edit = snapshot.TextBuffer.CreateEdit())
             {
                 edit.Insert(snapshot.Length, view.Options.GetNewLineCharacter());
+                edit.Apply();
+            }
+        }
+
+        private static void EnsureEndOfLine(IWpfTextView view, string endOfLine)
+        {
+            ITextSnapshot snapshot = view.TextSnapshot;
+            var lineCount = snapshot.LineCount;
+
+            if (lineCount == 0)
+            {
+                return;
+            }
+
+            using (var edit = snapshot.TextBuffer.CreateEdit())
+            {
+                for (int i = 0; i < lineCount; i++)
+                {
+                    ITextSnapshotLine line = snapshot.GetLineFromLineNumber(i);
+
+                    var existingLineBreakText = line.GetLineBreakText();
+                    if (existingLineBreakText != endOfLine && !string.IsNullOrEmpty(existingLineBreakText))
+                    {
+                        edit.Delete(line.End.Position, existingLineBreakText.Length);
+                        edit.Insert(line.End.Position, endOfLine);
+                    }
+                }
+
                 edit.Apply();
             }
         }
