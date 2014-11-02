@@ -58,7 +58,6 @@
     <Compile Include="ContentType\EditorConfigContentTypeDefinition.cs" />
     <Compile Include="EditorConfigTextViewCreationListener.cs" />
     <Compile Include="ListenerBase.cs" />
-    <Compile Include="FileSettings.cs" />
     <Compile Include="IViewSettingsContainer.cs" />
     <Compile Include="PluginFactory.cs" />
     <Compile Include="Guids.cs" />
@@ -106,9 +105,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Wrapper\Wrapper.vcxproj">
+    <ProjectReference Include="..\EditorConfig.Managed\EditorConfig.Managed.vcxproj">
       <Project>{85F4C576-ECA4-44D7-98D0-FE065632C51E}</Project>
-      <Name>Wrapper</Name>
+      <Name>EditorConfig.Managed</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

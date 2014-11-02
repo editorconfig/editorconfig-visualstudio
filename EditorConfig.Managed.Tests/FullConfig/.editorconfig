@@ -1,0 +1,32 @@
+root=true
+
+[*]
+indent_style = tab
+indent_size = 4
+global_prop = true
+
+[*.cshtml]
+indent_style = tab
+indent_size = 4
+
+[*.js]
+indent_style = space
+indent_size = 2
+
+[*.fsx]
+indent_style = space
+indent_size = 4
+
+[*.markdown]
+indent_style = space
+indent_size = 2
+
+[*.json]
+indent_style = space
+indent_size = 2
+
+[*.yml]
+indent_style = tab
+indent_size = 4
+yaml_specific_prop = Some Value
+

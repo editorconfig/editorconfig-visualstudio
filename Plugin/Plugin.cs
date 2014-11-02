@@ -97,7 +97,7 @@ namespace EditorConfig.VisualStudio
 
             try
             {
-                settings = new FileSettings(Core.Parse(path));
+                settings = new FileSettings(path);
                 ApplyLocalSettings();
             }
             catch (ParseException e)
@@ -135,9 +135,9 @@ namespace EditorConfig.VisualStudio
                 options.SetOptionValue<bool>(DefaultOptions.ConvertTabsToSpacesOptionId, value);
             }
 
-            if (settings.EndOfLine != null)
+            if (settings.NewLineCharacter != null)
             {
-                string value = settings.EndOfLine;
+                string value = settings.NewLineCharacter;
                 options.SetOptionValue<string>(DefaultOptions.NewLineCharacterOptionId, value);
                 options.SetOptionValue<bool>(DefaultOptions.ReplicateNewLineCharacterOptionId, false);
             }
