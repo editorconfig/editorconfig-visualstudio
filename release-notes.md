@@ -1,5 +1,13 @@
 # Release Notes
 
+
+## 0.4.0
+
+* Enforces settings on document open (i.e., trim trailing whitespace, fix line endings and fix mixed tabs/spaces).
+* Analyzes document for indent size trend and, if inconsistent, adjusts to fit settings.
+* Enforces settings before save (i.e., trim trailing whitespace, fix line endings and insert final newline).
+* Restores global settings when document loses focus.
+
 ## 0.3.2
 
 * Bug fixes
@@ -7,6 +15,11 @@
 ## 0.3.1
 
 * Visual Studio 2013 support
+
+
+## 0.3.0
+
+* Built against Core 0.11.0
 
 ## 0.2.6
 

@@ -1,45 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Vsix xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2010">
-  <Identifier Id="EditorConfig..5cd8e6a2-be43-4fcc-a345-40f6cc1e9c9f">
-    <Name>EditorConfig</Name>
-    <Author>EditorConfig Team</Author>
-    <Version>0.5.0</Version>
-    <Description xml:space="preserve">Loads editor options such as indentation sizes from standard, cross-platform .editorconfig files.</Description>
-    <Locale>1033</Locale>
-    <MoreInfoUrl>http://editorconfig.org/</MoreInfoUrl>
-    <License>..\LICENSE</License>
-    <Icon>logo.png</Icon>
-    <SupportedProducts>
-      <VisualStudio Version="10.0">
-        <Edition>Ultimate</Edition>
-        <Edition>Premium</Edition>
-        <Edition>Pro</Edition>
-        <Edition>IntegratedShell</Edition>
-      </VisualStudio>
-      <VisualStudio Version="11.0">
-        <Edition>Ultimate</Edition>
-        <Edition>Premium</Edition>
-        <Edition>Pro</Edition>
-        <Edition>IntegratedShell</Edition>
-      </VisualStudio>
-      <VisualStudio Version="12.0">
-        <Edition>Ultimate</Edition>
-        <Edition>Premium</Edition>
-        <Edition>Pro</Edition>
-        <Edition>IntegratedShell</Edition>
-      </VisualStudio>
-	  <VisualStudio Version="14.0">
-        <Edition>Ultimate</Edition>
-        <Edition>Premium</Edition>
-        <Edition>Pro</Edition>
-        <Edition>IntegratedShell</Edition>
-      </VisualStudio>
-    </SupportedProducts>
-    <SupportedFrameworkRuntimeEdition MinVersion="4.0" MaxVersion="4.0" />
-  </Identifier>
-  <References />
-  <Content>
-    <VsPackage>|%CurrentProject%;PkgdefProjectOutputGroup|</VsPackage>
-    <MefComponent>|%CurrentProject%|</MefComponent>
-  </Content>
-</Vsix>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+	<Metadata>
+		<Identity Id="EditorConfig..5cd8e6a2-be43-4fcc-a345-40f6cc1e9c9f" Version="0.6.0" Language="en-US" Publisher="EditorConfig Team" />
+		<DisplayName>EditorConfig</DisplayName>
+		<Description xml:space="preserve">Loads editor options such as indentation sizes from standard, cross-platform .editorconfig files.</Description>
+		<MoreInfo>http://editorconfig.org/</MoreInfo>
+		<License>License.txt</License>
+		<GettingStartedGuide>https://github.com/editorconfig/editorconfig-visualstudio/blob/master/readme.md</GettingStartedGuide>
+		<ReleaseNotes>https://github.com/editorconfig/editorconfig-visualstudio/blob/master/release-notes.md</ReleaseNotes>
+		<Icon>Resources\EditorConfig.png</Icon>
+		<PreviewImage>Resources\EditorConfig_Large.png</PreviewImage>
+		<Tags>editor, code editor, text editor, tabs, whitespace, indentation, newlines</Tags>
+	</Metadata>
+	<Installation InstalledByMsi="false">
+		<InstallationTarget Version="[11.0,]" Id="Microsoft.VisualStudio.Pro" />
+		<InstallationTarget Version="[11.0,]" Id="Microsoft.VisualStudio.Premium" />
+		<InstallationTarget Version="[11.0,]" Id="Microsoft.VisualStudio.Ultimate" />
+		<InstallationTarget Version="[11.0,]" Id="Microsoft.VisualStudio.IntegratedShell" />
+	</Installation>
+	<Dependencies>
+		<Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+		<Dependency Id="Microsoft.VisualStudio.MPF.12.0" DisplayName="Visual Studio MPF 12.0" d:Source="Installed" Version="[12.0,13.0)" />
+	</Dependencies>
+	<Assets>
+		<Asset Type="Microsoft.VisualStudio.VsPackage" Path="EditorConfig.pkgdef" />
+		<Asset Type="Microsoft.VisualStudio.MefComponent" Path="EditorConfig.dll" />
+	</Assets>
+</PackageManifest>
