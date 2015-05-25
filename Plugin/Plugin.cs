@@ -1,5 +1,8 @@
 using System;
+using System.Linq;
+using EditorConfig.Core;
 using EnvDTE;
+using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
@@ -18,9 +21,11 @@ namespace EditorConfig.VisualStudio
         ErrorListProvider messageList;
         ErrorTask message;
         private readonly IViewSettingsContainer viewSettingsContainer;
+        private readonly EditorConfigParser _parser = new EditorConfigParser();
 
-        FileSettings settings;
+        VisualStudioFileSettings settings;
         private string documentPath;
+
 
         public Plugin(IWpfTextView view, ITextDocument document, DTE dte,
             ErrorListProvider messageList, IViewSettingsContainer viewSettingsContainer)
@@ -97,14 +102,14 @@ namespace EditorConfig.VisualStudio
 
             try
             {
-                settings = new FileSettings(Core.Parse(path));
+                var editorConfigurations = _parser.Parse(path);
+                if (!editorConfigurations.Any())
+                    return;
+
+                settings = new VisualStudioFileSettings(editorConfigurations.First());
                 ApplyLocalSettings();
             }
-            catch (ParseException e)
-            {
-                ShowError(path, "EditorConfig syntax error in file \"" + e.File + "\", line " + e.Line);
-            }
-            catch (CoreException e)
+            catch (Exception e)
             {
                 ShowError(path, "EditorConfig core error: " + e.Message);
             }

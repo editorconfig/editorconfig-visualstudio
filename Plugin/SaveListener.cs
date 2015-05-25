@@ -96,7 +96,7 @@ namespace EditorConfig.VisualStudio
             SettingsViewApplier.Update(viewsSettings.Views.First(), viewsSettings.Settings);
         }
 
-        public void Register(string filepath, IWpfTextView view, FileSettings settings)
+        public void Register(string filepath, IWpfTextView view, VisualStudioFileSettings settings)
         {
             ViewsSettings viewsSettings;
 
@@ -129,7 +129,7 @@ namespace EditorConfig.VisualStudio
             }
         }
 
-        public void Update(string oldFilepath, string newFilePath, IWpfTextView view, FileSettings newSettings)
+        public void Update(string oldFilepath, string newFilePath, IWpfTextView view, VisualStudioFileSettings newSettings)
         {
             Unregister(oldFilepath, view);
             Register(newFilePath, view, newSettings);
@@ -143,13 +143,13 @@ namespace EditorConfig.VisualStudio
                 private set;
             }
 
-            public FileSettings Settings
+            public VisualStudioFileSettings Settings
             {
                 get;
                 private set;
             }
 
-            public ViewsSettings(IWpfTextView view, FileSettings settings)
+            public ViewsSettings(IWpfTextView view, VisualStudioFileSettings settings)
             {
                 Settings = settings;
                 Views = new HashSet<IWpfTextView>();

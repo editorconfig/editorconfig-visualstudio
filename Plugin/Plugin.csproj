@@ -11,7 +11,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EditorConfig.VisualStudio</RootNamespace>
     <AssemblyName>EditorConfigPlugin</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <!-- Look for the SDK specific to the current version of Visual Studio -->
   <PropertyGroup>
@@ -37,6 +38,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <CreateVsixContainer>True</CreateVsixContainer>
     <DeployExtension>True</DeployExtension>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,6 +50,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <CreateVsixContainer>True</CreateVsixContainer>
     <DeployExtension>True</DeployExtension>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Classify\EditorClassifierClassifierProvider.cs" />
@@ -58,7 +61,7 @@
     <Compile Include="ContentType\EditorConfigContentTypeDefinition.cs" />
     <Compile Include="EditorConfigTextViewCreationListener.cs" />
     <Compile Include="ListenerBase.cs" />
-    <Compile Include="FileSettings.cs" />
+    <Compile Include="VisualStudioFileSettings.cs" />
     <Compile Include="IViewSettingsContainer.cs" />
     <Compile Include="PluginFactory.cs" />
     <Compile Include="Guids.cs" />
@@ -78,11 +81,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <None Include="packages.config" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="EditorConfig.Core">
+      <HintPath>..\packages\editorconfig.0.12.1\lib\net45\EditorConfig.Core.dll</HintPath>
+    </Reference>
     <Reference Include="EnvDTE" />
     <Reference Include="Microsoft.VisualStudio.CoreUtility" />
     <Reference Include="Microsoft.VisualStudio.OLE.Interop" />
@@ -104,12 +111,6 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="PresentationCore" />
     <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Wrapper\Wrapper.vcxproj">
-      <Project>{85F4C576-ECA4-44D7-98D0-FE065632C51E}</Project>
-      <Name>Wrapper</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

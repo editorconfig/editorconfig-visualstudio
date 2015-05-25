@@ -7,7 +7,7 @@ namespace EditorConfig.VisualStudio
 {
     internal class SettingsViewApplier
     {
-        public static void Update(IWpfTextView view, FileSettings settings)
+        public static void Update(IWpfTextView view, VisualStudioFileSettings settings)
         {
             if (settings.InsertFinalNewLine.HasValue
                 && settings.InsertFinalNewLine.Value)
