@@ -38,4 +38,4 @@ The plugin supports the following EditorConfig [properties](http://editorconfig.
 
 ## Reporting problems
 
-If you encounter any problems, feel free to report them at the central EditorConfig [issue tracker](https://github.com/editorconfig/editorconfig/issues).
+If you encounter any problems, feel free to report them at the [issue tracker](https://github.com/editorconfig/editorconfig-visualstudio/issues).
