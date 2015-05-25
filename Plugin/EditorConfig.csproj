@@ -154,6 +154,15 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EditorConfigItemTemplate\EditorConfigItemTemplate.csproj">
+      <Project>{C812CBA0-F505-458A-A984-1B6C5B64DFF0}</Project>
+      <Name>EditorConfigItemTemplate</Name>
+      <VSIXSubPath>ItemTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <UseCodebase>true</UseCodebase>
   </PropertyGroup>

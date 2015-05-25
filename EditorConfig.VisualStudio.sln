@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditorConfig", "Plugin\EditorConfig.csproj", "{FEAAE923-0664-4072-903F-0C833CD43D36}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditorConfigItemTemplate", "EditorConfigItemTemplate\EditorConfigItemTemplate.csproj", "{C812CBA0-F505-458A-A984-1B6C5B64DFF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,18 @@ Global
 		{FEAAE923-0664-4072-903F-0C833CD43D36}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{FEAAE923-0664-4072-903F-0C833CD43D36}.Release|Win32.ActiveCfg = Release|Any CPU
 		{FEAAE923-0664-4072-903F-0C833CD43D36}.Release|Win32.Build.0 = Release|Any CPU
+		{C812CBA0-F505-458A-A984-1B6C5B64DFF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C812CBA0-F505-458A-A984-1B6C5B64DFF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C812CBA0-F505-458A-A984-1B6C5B64DFF0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C812CBA0-F505-458A-A984-1B6C5B64DFF0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C812CBA0-F505-458A-A984-1B6C5B64DFF0}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{C812CBA0-F505-458A-A984-1B6C5B64DFF0}.Debug|Win32.Build.0 = Debug|Any CPU
+		{C812CBA0-F505-458A-A984-1B6C5B64DFF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C812CBA0-F505-458A-A984-1B6C5B64DFF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C812CBA0-F505-458A-A984-1B6C5B64DFF0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C812CBA0-F505-458A-A984-1B6C5B64DFF0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C812CBA0-F505-458A-A984-1B6C5B64DFF0}.Release|Win32.ActiveCfg = Release|Any CPU
+		{C812CBA0-F505-458A-A984-1B6C5B64DFF0}.Release|Win32.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
