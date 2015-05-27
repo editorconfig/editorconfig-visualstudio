@@ -4,6 +4,7 @@ using EnvDTE;
 using Microsoft.VisualStudio.Text;
 using System;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace EditorConfig.VisualStudio.Logic.Cleaning
@@ -59,13 +60,24 @@ namespace EditorConfig.VisualStudio.Logic.Cleaning
         {
             if (_doc == null || _textDoc == null) return;
 
+            if (_doc.ReadOnly) OutputWindowHelper.WriteLine(_doc.Name + " is readonly and thus ignored.");
+
+            var settings = _settings.Properties.Aggregate(new StringBuilder(),
+                (sb, kv) => sb.AppendFormat(" {0}={1}", kv.Key, kv.Value), sb => sb.ToString());
+
+            var loadMessage = string.Format("{0}: opened with settings: {1}", _doc.Name, settings);
+            _ide.StatusBar.Text = "EditorConfig setttings applied.";
+            OutputWindowHelper.WriteLine(loadMessage);
+            return;
+
+            //For now lets not do initial unasked cleanup, cleanup only on save or format document
+            //Assume files are opened for reading only
+
             // Make sure the document to be cleaned up is active, required for some commands like format document.
             _doc.Activate();
 
             if (_ide.ActiveDocument != _doc)
-            {
                 OutputWindowHelper.WriteLine(_doc.Name + " did not complete activation before cleaning started.");
-            }
 
             new UndoTransactionHelper(_ide, "EditorConfig Cleanup").Run(
                 delegate
