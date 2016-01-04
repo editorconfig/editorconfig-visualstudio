@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <Name>EditorConfig file</Name>
+    <Description>A file for defining per project coding styles and other misc settings.</Description>
+    <Icon>editorconfig.ico</Icon>
+    <TemplateID>89e72999-b004-4810-bf50-cc99ea8d247e</TemplateID>
+    <ProjectType>General</ProjectType>
+    <ShowByDefault>true</ShowByDefault>
+    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+    <DefaultName>does_not_matter_always_extensionless.editorconfig</DefaultName>
+    <EnableEditOfLocationField>false</EnableEditOfLocationField>
+  </TemplateData>
+  <TemplateContent>
+    <ProjectItem ReplaceParameters="false" TargetFileName=".editorconfig">.editorconfig</ProjectItem>
+  </TemplateContent>
+</VSTemplate>
