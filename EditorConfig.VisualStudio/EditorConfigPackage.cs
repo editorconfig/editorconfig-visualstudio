@@ -103,6 +103,30 @@ namespace EditorConfig.VisualStudio
             get { return IDEVersion.Major < 11; }
         }
 
+        /// <summary>
+        /// Gets the currently active document, otherwise null.
+        /// </summary>
+        public Document ActiveDocument
+        {
+            get
+            {
+                try
+                {
+                    return IDE.ActiveDocument;
+                }
+                catch (Exception)
+                {
+                    // If a project property page is active, accessing the ActiveDocument causes an exception.
+                    return null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a flag indicating if EditorConfig is running inside an AutoSave context.
+        /// </summary>
+        public static bool IsAutoSaveContext { get; set; }
+
         #endregion Public Integration Properties
 
         #region Private Event Listener Properties

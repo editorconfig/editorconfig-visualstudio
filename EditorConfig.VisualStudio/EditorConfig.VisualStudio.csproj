@@ -173,6 +173,7 @@
     <Compile Include="Completion\EditorConfigCompletionSource.cs" />
     <Compile Include="ContentType\EditorConfigContentTypeDefinition.cs" />
     <Compile Include="EditorConfigTextViewCreationListener.cs" />
+    <Compile Include="Helpers\ActiveDocumentRestorer.cs" />
     <Compile Include="Helpers\EditPointExtensions.cs" />
     <Compile Include="Helpers\OutputWindowHelper.cs" />
     <Compile Include="Helpers\SettingsExtensions.cs" />
