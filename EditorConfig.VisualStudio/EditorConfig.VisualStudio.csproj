@@ -24,6 +24,9 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <!-- This is added to prevent forced migrations in Visual Studio -->
     <MinimumVisualStudioVersion Condition="'$(VisualStudioVersion)' != ''">$(VisualStudioVersion)</MinimumVisualStudioVersion>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(DevEnvDir)\devenv.exe</StartProgram>
+    <StartArguments>/rootsuffix Exp</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
