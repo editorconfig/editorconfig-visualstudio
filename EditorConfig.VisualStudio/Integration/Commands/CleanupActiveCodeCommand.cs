@@ -1,5 +1,6 @@
 ﻿using EnvDTE;
 using System.ComponentModel.Design;
+using EditorConfig.VisualStudio.Helpers;
 
 namespace EditorConfig.VisualStudio.Integration.Commands
 {
@@ -63,7 +64,19 @@ namespace EditorConfig.VisualStudio.Integration.Commands
         /// <param name="document">The document about to be saved.</param>
         internal void OnBeforeDocumentSave(Document document)
         {
-            CodeCleanupManager.Cleanup(document);
+            try
+            {
+                EditorConfigPackage.IsAutoSaveContext = true;
+
+                using (new ActiveDocumentRestorer(Package))
+                {
+                    CodeCleanupManager.Cleanup(document);
+                }
+            }
+            finally
+            {
+                EditorConfigPackage.IsAutoSaveContext = false;
+            }
         }
 
         #endregion Internal Methods

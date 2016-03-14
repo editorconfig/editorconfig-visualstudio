@@ -33,22 +33,13 @@ namespace EditorConfig.VisualStudio.Helpers
         #region Methods
 
         /// <summary>
-        /// Runs the specified try action within a try block.
-        /// </summary>
-        /// <param name="tryAction">The action to be performed within a try block.</param>
-        public void Run(Action tryAction)
-        {
-            Run(() => true, tryAction, ex => { });
-        }
-
-        /// <summary>
         /// Runs the specified try action within a try block, and conditionally the catch action within a catch block.
         /// </summary>
         /// <param name="tryAction">The action to be performed within a try block.</param>
         /// <param name="catchAction">The action to be performed wihin a catch block.</param>
-        public void Run(Action tryAction, Action<Exception> catchAction)
+        public void Run(Action tryAction, Action<Exception> catchAction = null)
         {
-            Run(() => true, tryAction, catchAction);
+            Run(() => !EditorConfigPackage.IsAutoSaveContext, tryAction, catchAction);
         }
 
         /// <summary>
@@ -74,7 +65,7 @@ namespace EditorConfig.VisualStudio.Helpers
             }
             catch (Exception ex)
             {
-                catchAction(ex);
+                if (catchAction != null) catchAction(ex);
 
                 if (!shouldCloseUndoContext) return;
                 _ide.UndoContext.SetAborted();
