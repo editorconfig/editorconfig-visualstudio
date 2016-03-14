@@ -9,7 +9,7 @@ See the [project web site](http://editorconfig.org) for more information.
 
 ## Installing
 
-This plugin works with Visual Studio 2010 or later. The easiest way to install it is through Visual Studio's built-in Extension Manager. Just search for "EditorConfig" in the Online Gallery section. Or, download a copy from the [Visual Studio gallery](http://visualstudiogallery.msdn.microsoft.com/c8bccfe2-650c-4b42-bc5c-845e21f96328) website.
+This plugin works with Visual Studio 2012 or later. The easiest way to install it is through Visual Studio's built-in Extension Manager. Just search for "EditorConfig" in the Online Gallery section. Or, download a copy from the [Visual Studio gallery](http://visualstudiogallery.msdn.microsoft.com/c8bccfe2-650c-4b42-bc5c-845e21f96328) website.
 
 ## Bleeding edge [![Build status](https://ci.appveyor.com/api/projects/status/ad0dc6ldff3bbf3o?svg=true)](https://ci.appveyor.com/project/Mpdreamz/editorconfig-visualstudio/branch/master)
 
