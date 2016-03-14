@@ -39,9 +39,7 @@ let tags = "editor, code editor, text editor, tabs, whitespace, indentation, new
 
 // File system information
 // (<solutionFile>.sln is built during the building process)
-let solutionFile  = "EditorConfig.VisualStudio"
-// Pattern specifying assemblies to be tested using NUnit
-let testAssemblies = "tests/**/bin/Release/*Tests*.dll"
+let solutionFile  = "src/EditorConfig.VisualStudio.sln"
 
 // Git configuration (used for publishing documentation in gh-pages branch)
 // The profile where the project is posted
@@ -58,10 +56,8 @@ let release = parseReleaseNotes (IO.File.ReadAllLines "release-notes.md")
 let isAppVeyorBuild = environVar "APPVEYOR" <> null
 let buildVersion = sprintf "%s-a%s" release.NugetVersion (DateTime.UtcNow.ToString "yyMMddHHmm")
 
-let buildDir = "bin"
-let vsixDir = "bin/vsix"
-let tempDir = "temp"
-let buildMergedDir = buildDir @@ "merged"
+let buildDir = "artifacts"
+let vsixArtifact = sprintf "%s/EditorConfig-%s.vsix" buildDir buildVersion
 
 Target "BuildVersion" (fun _ ->
     Shell.Exec("appveyor", sprintf "UpdateBuild -Version \"%s\"" buildVersion) |> ignore
@@ -76,7 +72,7 @@ Target "AssemblyInfo" (fun _ ->
         Attribute.FileVersion release.AssemblyVersion ]
 
   CreateCSharpAssemblyInfo "src/EditorConfig.VisualStudio/Properties/AssemblyInfo.cs"
-      (Attribute.InternalsVisibleTo "EditorConfig.VisualStudio.Tests" :: Attribute.Title "EditorConfig.VisualStudio" :: shared)
+      (Attribute.Title "EditorConfig.VisualStudio" :: shared)
 
   let manifest = "src/EditorConfig.VisualStudio/source.extension.vsixmanifest"
   File.WriteAllLines(
@@ -90,11 +86,7 @@ Target "AssemblyInfo" (fun _ ->
 // Clean build results
 
 Target "Clean" (fun _ ->
-    CleanDirs [buildDir; vsixDir; tempDir; "nuget"]
-)
-
-Target "CleanDocs" (fun _ ->
-    CleanDirs ["docs/output"]
+    CleanDirs [buildDir;]
 )
 
 // --------------------------------------------------------------------------------------
@@ -102,67 +94,51 @@ Target "CleanDocs" (fun _ ->
 
 Target "Build" (fun _ ->
     // We would like to build only one solution
-    !! (solutionFile + ".sln")
-    |> MSBuildReleaseExt  "" ["VisualStudioVersion", "12.0"] "Rebuild"
+    !! solutionFile
+    |> MSBuildReleaseExt  "" ["VisualStudioVersion", "14.0"] "Rebuild"
     |> ignore
+
+    File.Copy ("src/EditorConfig.VisualStudio/bin/Release/EditorConfig.vsix", vsixArtifact)
 )
 
-Target "CleanVSIX" (fun _ ->
-    ZipHelper.Unzip vsixDir "bin/EditorConfig.VisualStudio.vsix"
-    let regex = Regex("bin")
-    let filesToKeep =
-      Directory.GetFiles("bin", "*.dll")
-      |> Seq.map (fun fileName -> regex.Replace(fileName, vsixDir, 1))
-    let filesToDelete =
-      Seq.fold (--) (!! "bin/vsix/*.dll") filesToKeep
-        ++ "bin/vsix/Microsoft.VisualStudio*"
-        ++ "bin/vsix/Microsoft.Build*"
-    DeleteFiles filesToDelete
-
-    CreateDir buildMergedDir
-
-    let filesToPack =
-        ["EditorConfig.VisualStudio.dll"; "EditorConfig.Core.dll"; "FSharp.Core.dll"; "Newtonsoft.Json.dll" ; "Chessie.dll";
-         "ReactiveUI.dll"; "ReactiveUI.Events.dll"; "Splat.dll"; "System.Reactive.Core.dll"; "System.Reactive.Interfaces.dll"; "System.Reactive.Linq.dll"; "System.Reactive.PlatformServices.dll"; "System.Reactive.Windows.Threading.dll"]
-        |> List.map (fun l -> vsixDir @@ l)
-
-    let toPack = filesToPack |> separated " "
-
-    let result =
-        ExecProcess (fun info ->
-            info.FileName <- currentDirectory </> "packages" </> "build" </> "ILRepack" </> "tools" </> "ILRepack.exe"
-            info.Arguments <- sprintf "/verbose /lib:%s /ver:%s /out:%s %s" vsixDir release.AssemblyVersion (buildMergedDir </> "Paket.VisualStudio.dll") toPack
-            ) (TimeSpan.FromMinutes 5.)
-
-    if result <> 0 then failwithf "Error during ILRepack execution."
-
-    DeleteFiles filesToPack
-    CopyFile vsixDir (buildMergedDir </> "Paket.VisualStudio.dll")
-
-    ZipHelper.Zip vsixDir "bin/Paket.VisualStudio.vsix" (!! "bin/vsix/**")
-)
-
-// --------------------------------------------------------------------------------------
-// Generate the documentation
-
-Target "GenerateDocs" (fun _ ->
-    executeFSIWithArgs "docs/tools" "generate.fsx" ["--define:RELEASE"] [] |> ignore
-)
+//Target "CleanVSIX" (fun _ ->
+//    ZipHelper.Unzip vsixDir "bin/EditorConfig.VisualStudio.vsix"
+//    let regex = Regex("bin")
+//    let filesToKeep =
+//      Directory.GetFiles("bin", "*.dll")
+//      |> Seq.map (fun fileName -> regex.Replace(fileName, vsixDir, 1))
+//    let filesToDelete =
+//      Seq.fold (--) (!! "bin/vsix/*.dll") filesToKeep
+//        ++ "bin/vsix/Microsoft.VisualStudio*"
+//        ++ "bin/vsix/Microsoft.Build*"
+//    DeleteFiles filesToDelete
+//
+//    CreateDir buildMergedDir
+//
+//    let filesToPack =
+//        ["EditorConfig.VisualStudio.dll"; "EditorConfig.Core.dll"; "FSharp.Core.dll"; "Newtonsoft.Json.dll" ; "Chessie.dll";
+//         "ReactiveUI.dll"; "ReactiveUI.Events.dll"; "Splat.dll"; "System.Reactive.Core.dll"; "System.Reactive.Interfaces.dll"; "System.Reactive.Linq.dll"; "System.Reactive.PlatformServices.dll"; "System.Reactive.Windows.Threading.dll"]
+//        |> List.map (fun l -> vsixDir @@ l)
+//
+//    let toPack = filesToPack |> separated " "
+//
+//    let result =
+//        ExecProcess (fun info ->
+//            info.FileName <- currentDirectory </> "packages" </> "build" </> "ILRepack" </> "tools" </> "ILRepack.exe"
+//            info.Arguments <- sprintf "/verbose /lib:%s /ver:%s /out:%s %s" vsixDir release.AssemblyVersion (buildMergedDir </> "Paket.VisualStudio.dll") toPack
+//            ) (TimeSpan.FromMinutes 5.)
+//
+//    if result <> 0 then failwithf "Error during ILRepack execution."
+//
+//    DeleteFiles filesToPack
+//    CopyFile vsixDir (buildMergedDir </> "Paket.VisualStudio.dll")
+//
+//    ZipHelper.Zip vsixDir "bin/Paket.VisualStudio.vsix" (!! "bin/vsix/**")
+//)
 
 // --------------------------------------------------------------------------------------
 // Release Scripts
 
-Target "ReleaseDocs" (fun _ ->
-    let tempDocsDir = "temp/gh-pages"
-    CleanDir tempDocsDir
-    Repository.cloneSingleBranch "" cloneUrl "gh-pages" tempDocsDir
-
-    fullclean tempDocsDir
-    CopyRecursive "docs/output" tempDocsDir true |> tracefn "%A"
-    StageAll tempDocsDir
-    Git.Commit.Commit tempDocsDir (sprintf "[skip ci] Update generated documentation for version %s" release.NugetVersion)
-    Branches.push tempDocsDir
-)
 
 (*#load "paket-files/build/fsharp/FAKE/modules/Octokit/Octokit.fsx"
 open Octokit
@@ -246,9 +222,7 @@ Target "Default" DoNothing
   ==> "Build"
   //==> "CleanVSIX"
   ==> "Default"
-  (*==> "CleanDocs"
-  ==> "GenerateDocs"
-  ==> "ReleaseDocs"
+  (*
   ==> "ReleaseToGitHub"
   ==> "UploadToGallery"*)
   ==> "Release"

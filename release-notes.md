@@ -1,5 +1,21 @@
 # Release Notes
 
+## 0.6.0
+
+* No longer relies on C++ editorconfig but on the .NET port
+* Moved to @jedmao branch that relies on codemaid based architecture so we can restore global settings more aggressively
+  This to relieve a common nuisance that having two visual studios one with and one without .editorconfig settings do not respect global
+  (default) settings.
+* Add file template to easily add `.editorconfig` file to a project
+* Re added @jaredpars autocomplete and syntax highlight work
+* Moved to paket and fake for builds and dependency management
+* Moved to VS SDK nuget packages
+* Fixed SO exception when renaming a file (only occured in development version not in previously published release)
+
+## 0.5.0
+
+* Autocomplete now accepts domain properties
+* VS 2015 support
 
 ## 0.4.0
 
