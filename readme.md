@@ -1,28 +1,27 @@
 # EditorConfig Visual Studio Plugin
 
-This plugin causes Visual Studio to load its indentation options from a standard `.editorconfig` settings file. See the [project web site](http://editorconfig.org) for more information.
+[![Join the chat at https://gitter.im/Mpdreamz/editorconfig-visualstudio](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Mpdreamz/editorconfig-visualstudio?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+This plugin allows you to have per project checked in Visual Studio settings using an `.editorconfig` settings file.
+
+See the [project web site](http://editorconfig.org) for more information.
+
 
 ## Installing
 
 This plugin works with Visual Studio 2010 or later. The easiest way to install it is through Visual Studio's built-in Extension Manager. Just search for "EditorConfig" in the Online Gallery section. Or, download a copy from the [Visual Studio gallery](http://visualstudiogallery.msdn.microsoft.com/c8bccfe2-650c-4b42-bc5c-845e21f96328) website.
 
+## Bleeding edge [![Build status](https://ci.appveyor.com/api/projects/status/ad0dc6ldff3bbf3o?svg=true)](https://ci.appveyor.com/project/Mpdreamz/editorconfig-visualstudio/branch/master)
+
+Bleeding edge vsix installer is build on every commit and can be found here:
+
+https://ci.appveyor.com/project/Mpdreamz/editorconfig-visualstudio/build/artifacts
+
 ## Building
 
-To build this software, first download and build the [EditorConfig core library](https://github.com/editorconfig/editorconfig-core) in the `Core` directory. To automatically download the core library, use the git command:
+We adhere to the [F5 manifesto](http://www.khalidabuhakmeh.com/the-f5-manifesto-for-net-developers) so you should be able to clone, open in VS and build.
 
-    git submodule update --init
-
-Follow the [build instructions](https://github.com/editorconfig/editorconfig-core-c/blob/master/INSTALL.md#installing-from-source) for the core library as normal, but include the `-DMSVC_MD=ON` option when invoking CMake:
-
-    cd Core/
-    cmake . -DMSVC_MD=ON
-
-Once the core library is built, open the solution file `EditorConfig.VisualStudio.sln` and compile the plugin. 
-
-You will need to install the [Visual Studio 2010 SDK](http://www.microsoft.com/en-us/download/confirmation.aspx?id=2680) explicitly
-since its the last version built against .NET 4.0 and some referenced assemblies might resolve the later SDK requiring .NET 4.5.
-
-The resulting plugin is named `Plugin/bin/(Debug|Release)/EditorConfigPlugin.vsix`, and double-clicking installs it into Visual Studio.
+Building from the command line can be done calling `build.cmd` this will create a vsix packages under `artifacts` directory in the root of the checkout.
 
 ## Supported properties
 
