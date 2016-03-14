@@ -1,0 +1,107 @@
+FRAMEWORK: >= NET45
+NUGET
+  remote: http://api.nuget.org/v3/index.json
+  specs:
+    editorconfig (0.12.1)
+    Microsoft.VisualStudio.SDK.VsixSuppression (14.1.15) - copy_local: false
+    Microsoft.VSSDK.BuildTools (14.1.24720) - copy_local: false
+    VSSDK.CoreUtility (11.0.4) - copy_local: false
+      VSSDK.IDE.11 (>= 11.0.4 < 12.0.0)
+    VSSDK.CoreUtility.11 (11.0.4) - copy_local: false
+      VSSDK.CoreUtility (>= 11.0.4 < 12.0.0)
+      VSSDK.IDE.11 (>= 11.0.4 < 12.0.0)
+    VSSDK.DTE (7.0.4) - copy_local: false
+      VSSDK.IDE (>= 7.0.4 < 8.0.0)
+    VSSDK.DTE.8 (8.0.4) - copy_local: false
+      VSSDK.DTE (>= 7.0.4 < 8.0.0)
+      VSSDK.IDE.8 (>= 8.0.4 < 9.0.0)
+    VSSDK.Editor (11.0.4) - copy_local: false
+      VSSDK.CoreUtility (>= 11.0.4)
+      VSSDK.IDE.11 (>= 11.0.4 < 12.0.0)
+      VSSDK.OLE.Interop (>= 7.0.4 < 8.0.0)
+      VSSDK.Text (>= 11.0.4)
+      VSSDK.TextManager.Interop (>= 7.0.4 < 8.0.0)
+      VSSDK.TextManager.Interop.8 (>= 8.0.4 < 9.0.0)
+    VSSDK.Editor.11 (11.0.4) - copy_local: false
+      VSSDK.CoreUtility.11 (>= 11.0.4 < 12.0.0)
+      VSSDK.Editor (>= 11.0.4 < 12.0.0)
+      VSSDK.IDE.11 (>= 11.0.4 < 12.0.0)
+      VSSDK.Text.11 (>= 11.0.4 < 12.0.0)
+    VSSDK.GraphModel (11.0.4) - copy_local: false
+      VSSDK.IDE.11 (>= 11.0.4 < 12.0.0)
+    VSSDK.IDE (7.0.4) - copy_local: false
+    VSSDK.IDE.10 (10.0.4) - copy_local: false
+    VSSDK.IDE.11 (11.0.4) - copy_local: false
+    VSSDK.IDE.8 (8.0.4) - copy_local: false
+    VSSDK.IDE.9 (9.0.4) - copy_local: false
+    VSSDK.Language (11.0.4) - copy_local: false
+      VSSDK.CoreUtility (>= 11.0.4)
+      VSSDK.IDE.11 (>= 11.0.4 < 12.0.0)
+      VSSDK.Text (>= 11.0.4)
+    VSSDK.Language.11 (11.0.4) - copy_local: false
+      VSSDK.CoreUtility.11 (>= 11.0.4 < 12.0.0)
+      VSSDK.IDE.11 (>= 11.0.4 < 12.0.0)
+      VSSDK.Language (>= 11.0.4 < 12.0.0)
+      VSSDK.Text.11 (>= 11.0.4 < 12.0.0)
+    VSSDK.OLE.Interop (7.0.4) - copy_local: false
+      VSSDK.IDE (>= 7.0.4 < 8.0.0)
+    VSSDK.Shell.11 (11.0.4) - copy_local: false
+      VSSDK.DTE (>= 7.0.4 < 8.0.0)
+      VSSDK.IDE.11 (>= 11.0.4 < 12.0.0)
+      VSSDK.OLE.Interop (>= 7.0.4 < 8.0.0)
+      VSSDK.Shell.Immutable.10 (>= 10.0.4 < 11.0.0)
+      VSSDK.Shell.Immutable.11 (>= 11.0.4 < 12.0.0)
+      VSSDK.Shell.Interop (>= 7.0.4 < 8.0.0)
+      VSSDK.Shell.Interop.11 (>= 11.0.4 < 12.0.0)
+      VSSDK.Shell.Interop.8 (>= 8.0.4 < 9.0.0)
+      VSSDK.Shell.Interop.9 (>= 9.0.4 < 10.0.0)
+      VSSDK.TextManager.Interop (>= 7.0.4 < 8.0.0)
+    VSSDK.Shell.Immutable.10 (10.0.4) - copy_local: false
+      VSSDK.IDE.10 (>= 10.0.4 < 11.0.0)
+    VSSDK.Shell.Immutable.11 (11.0.4) - copy_local: false
+      VSSDK.GraphModel (>= 11.0.4)
+      VSSDK.IDE.11 (>= 11.0.4 < 12.0.0)
+      VSSDK.OLE.Interop (>= 7.0.4 < 8.0.0)
+      VSSDK.Shell.Interop (>= 7.0.4 < 8.0.0)
+    VSSDK.Shell.Interop (7.0.4) - copy_local: false
+      VSSDK.IDE (>= 7.0.4 < 8.0.0)
+      VSSDK.OLE.Interop (>= 7.0.4 < 8.0.0)
+      VSSDK.TextManager.Interop (>= 7.0.4 < 8.0.0)
+    VSSDK.Shell.Interop.10 (10.0.4) - copy_local: false
+      VSSDK.IDE.10 (>= 10.0.4 < 11.0.0)
+      VSSDK.OLE.Interop (>= 7.0.4 < 8.0.0)
+      VSSDK.Shell.Interop.8 (>= 8.0.4 < 9.0.0)
+      VSSDK.Shell.Interop.9 (>= 9.0.4 < 10.0.0)
+    VSSDK.Shell.Interop.11 (11.0.4) - copy_local: false
+      VSSDK.IDE.11 (>= 11.0.4 < 12.0.0)
+      VSSDK.OLE.Interop (>= 7.0.4 < 8.0.0)
+      VSSDK.Shell.Interop (>= 7.0.4 < 8.0.0)
+      VSSDK.Shell.Interop.10 (>= 10.0.4 < 11.0.0)
+      VSSDK.Shell.Interop.8 (>= 8.0.4 < 9.0.0)
+      VSSDK.Shell.Interop.9 (>= 9.0.4 < 10.0.0)
+    VSSDK.Shell.Interop.8 (8.0.4) - copy_local: false
+      VSSDK.IDE.8 (>= 8.0.4 < 9.0.0)
+      VSSDK.OLE.Interop (>= 7.0.4 < 8.0.0)
+      VSSDK.Shell.Interop (>= 7.0.4 < 8.0.0)
+      VSSDK.TextManager.Interop (>= 7.0.4 < 8.0.0)
+      VSSDK.TextManager.Interop.8 (>= 8.0.4 < 9.0.0)
+    VSSDK.Shell.Interop.9 (9.0.4) - copy_local: false
+      VSSDK.IDE.9 (>= 9.0.4 < 10.0.0)
+      VSSDK.OLE.Interop (>= 7.0.4 < 8.0.0)
+      VSSDK.Shell.Interop.8 (>= 8.0.4 < 9.0.0)
+      VSSDK.TextManager.Interop (>= 7.0.4 < 8.0.0)
+    VSSDK.Text (11.0.4) - copy_local: false
+      VSSDK.CoreUtility (>= 11.0.4)
+      VSSDK.IDE.11 (>= 11.0.4 < 12.0.0)
+    VSSDK.Text.11 (11.0.4) - copy_local: false
+      VSSDK.CoreUtility.11 (>= 11.0.4 < 12.0.0)
+      VSSDK.IDE.11 (>= 11.0.4 < 12.0.0)
+      VSSDK.Text (>= 11.0.4 < 12.0.0)
+    VSSDK.TextManager.Interop (7.0.4) - copy_local: false
+      VSSDK.IDE (>= 7.0.4 < 8.0.0)
+      VSSDK.OLE.Interop (>= 7.0.4 < 8.0.0)
+    VSSDK.TextManager.Interop.8 (8.0.4) - copy_local: false
+      VSSDK.IDE.8 (>= 8.0.4 < 9.0.0)
+      VSSDK.OLE.Interop (>= 7.0.4 < 8.0.0)
+      VSSDK.Shell.Interop (>= 7.0.4 < 8.0.0)
+      VSSDK.TextManager.Interop (>= 7.0.4 < 8.0.0)

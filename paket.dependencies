@@ -1,0 +1,33 @@
+source https://api.nuget.org/v3/index.json
+framework >= net45
+
+nuget editorconfig 0.12.1
+nuget Microsoft.VisualStudio.SDK.VsixSuppression 14.1.15 copy_local: false
+nuget Microsoft.VSSDK.BuildTools 14.1.24720 copy_local: false
+nuget VSSDK.CoreUtility 11.0.4 copy_local: false
+nuget VSSDK.CoreUtility.11 11.0.4 copy_local: false
+nuget VSSDK.DTE 7.0.4 copy_local: false
+nuget VSSDK.DTE.8 8.0.4 copy_local: false
+nuget VSSDK.Editor 11.0.4 copy_local: false
+nuget VSSDK.Editor.11 11.0.4 copy_local: false
+nuget VSSDK.GraphModel 11.0.4 copy_local: false
+nuget VSSDK.IDE 7.0.4 copy_local: false
+nuget VSSDK.IDE.10 10.0.4 copy_local: false
+nuget VSSDK.IDE.11 11.0.4 copy_local: false
+nuget VSSDK.IDE.8 8.0.4 copy_local: false
+nuget VSSDK.IDE.9 9.0.4 copy_local: false
+nuget VSSDK.Language 11.0.4 copy_local: false
+nuget VSSDK.Language.11 11.0.4 copy_local: false
+nuget VSSDK.OLE.Interop 7.0.4 copy_local: false
+nuget VSSDK.Shell.11 11.0.4 copy_local: false
+nuget VSSDK.Shell.Immutable.10 10.0.4 copy_local: false
+nuget VSSDK.Shell.Immutable.11 11.0.4 copy_local: false
+nuget VSSDK.Shell.Interop 7.0.4 copy_local: false
+nuget VSSDK.Shell.Interop.10 10.0.4 copy_local: false
+nuget VSSDK.Shell.Interop.11 11.0.4 copy_local: false
+nuget VSSDK.Shell.Interop.8 8.0.4 copy_local: false
+nuget VSSDK.Shell.Interop.9 9.0.4 copy_local: false
+nuget VSSDK.Text 11.0.4 copy_local: false
+nuget VSSDK.Text.11 11.0.4 copy_local: false
+nuget VSSDK.TextManager.Interop 7.0.4 copy_local: false
+nuget VSSDK.TextManager.Interop.8 8.0.4 copy_local: false
