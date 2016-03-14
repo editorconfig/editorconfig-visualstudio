@@ -3,20 +3,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{5C2A67A1-08E3-45C3-AF51-C5652DDC4BE3}"
-	ProjectSection(SolutionItems) = preProject
-		paket.dependencies = paket.dependencies
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditorConfig.VisualStudi", "EditorConfig.VisualStudio\EditorConfig.VisualStudio.csproj", "{FEAAE923-0664-4072-903F-0C833CD43D36}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditorConfig.VisualStudio", "EditorConfig.VisualStudio\EditorConfig.VisualStudio.csproj", "{FEAAE923-0664-4072-903F-0C833CD43D36}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditorConfigItemTemplate", "EditorConfigItemTemplate\EditorConfigItemTemplate.csproj", "{C812CBA0-F505-458A-A984-1B6C5B64DFF0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{947E4BAB-59E4-4953-A9C1-A6A81A6EF229}"
 	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-		.gitattributes = .gitattributes
-		.gitignore = .gitignore
+		..\.editorconfig = ..\.editorconfig
+		..\.gitattributes = ..\.gitattributes
+		..\.gitignore = ..\.gitignore
+		..\build.cmd = ..\build.cmd
+		..\build.fsx = ..\build.fsx
+		..\CONTRIBUTORS = ..\CONTRIBUTORS
+		..\LICENSE = ..\LICENSE
+		..\paket.dependencies = ..\paket.dependencies
+		..\readme.md = ..\readme.md
+		..\release-notes.md = ..\release-notes.md
 	EndProjectSection
 EndProject
 Global

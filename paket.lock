@@ -105,3 +105,9 @@ NUGET
       VSSDK.OLE.Interop (>= 7.0.4 < 8.0.0)
       VSSDK.Shell.Interop (>= 7.0.4 < 8.0.0)
       VSSDK.TextManager.Interop (>= 7.0.4 < 8.0.0)
+
+GROUP Build
+NUGET
+  remote: http://api.nuget.org/v3/index.json
+  specs:
+    FAKE (4.22.0)

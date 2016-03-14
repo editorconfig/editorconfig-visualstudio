@@ -31,3 +31,8 @@ nuget VSSDK.Text 11.0.4 copy_local: false
 nuget VSSDK.Text.11 11.0.4 copy_local: false
 nuget VSSDK.TextManager.Interop 7.0.4 copy_local: false
 nuget VSSDK.TextManager.Interop.8 8.0.4 copy_local: false
+
+group build
+source https://api.nuget.org/v3/index.json
+
+nuget FAKE
