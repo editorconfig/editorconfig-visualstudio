@@ -4,6 +4,7 @@ framework >= net45
 nuget editorconfig 0.12.1
 nuget Microsoft.VisualStudio.SDK.VsixSuppression 14.1.15 copy_local: false
 nuget Microsoft.VSSDK.BuildTools 14.1.24720 copy_local: false
+nuget VSSDK.ComponentModelHost.11
 nuget VSSDK.CoreUtility 11.0.4 copy_local: false
 nuget VSSDK.CoreUtility.11 11.0.4 copy_local: false
 nuget VSSDK.DTE 7.0.4 copy_local: false

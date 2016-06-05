@@ -33,6 +33,14 @@ namespace EditorConfig.VisualStudio.Integration.Commands
         /// </summary>
         protected EditorConfigPackage Package { get; private set; }
 
+        /// <summary>
+        /// Gets the service provider.
+        /// </summary>
+        protected IServiceProvider ServiceProvider
+        {
+            get { return Package; }
+        }
+
         #endregion Properties
 
         #region Event Handlers

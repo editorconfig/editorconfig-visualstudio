@@ -1,6 +1,7 @@
 ﻿using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
@@ -120,6 +121,14 @@ namespace EditorConfig.VisualStudio
                     return null;
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the component model for the session.
+        /// </summary>
+        public IComponentModel ComponentModel
+        {
+            get { return GetService(typeof(SComponentModel)) as IComponentModel; }
         }
 
         /// <summary>
