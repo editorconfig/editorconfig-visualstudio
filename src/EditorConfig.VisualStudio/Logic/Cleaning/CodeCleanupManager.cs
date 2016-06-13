@@ -1,5 +1,6 @@
 ﻿using EnvDTE;
 using System;
+using System.Text;
 using System.Linq;
 using Microsoft.VisualStudio.Text;
 using EditorConfig.Core;
@@ -102,7 +103,11 @@ namespace EditorConfig.VisualStudio.Logic.Cleaning
         /// <param name="textBuffer">The text buffer for the document.</param>
         private void RunCodeCleanupGeneric(Document document, ITextBuffer textBuffer)
         {
+            ITextDocument textDocument;
+
             var doc = (TextDocument)document.Object("TextDocument");
+            textBuffer.Properties.TryGetProperty(typeof(ITextDocument), out textDocument);
+
             var path = doc.Parent.FullName;
 
             FileConfiguration settings;
@@ -112,6 +117,9 @@ namespace EditorConfig.VisualStudio.Logic.Cleaning
             using (ITextEdit edit = textBuffer.CreateEdit())
             {
                 ITextSnapshot snapshot = edit.Snapshot;
+
+                if (settings.Charset != null && textDocument != null)
+                    FixDocumentCharset(textDocument, settings.Charset.Value);
 
                 if (settings.TryKeyAsBool("trim_trailing_whitespace"))
                     TrimTrailingWhitespace(snapshot, edit);
@@ -124,6 +132,20 @@ namespace EditorConfig.VisualStudio.Logic.Cleaning
 
                 edit.Apply();
             }
+        }
+
+        private void FixDocumentCharset(ITextDocument document, Charset charset)
+        {
+            if (charset == Charset.Latin1)
+                document.Encoding = Encoding.GetEncoding("ISO-8859-1");
+            else if (charset == Charset.UTF8)
+                document.Encoding = new UTF8Encoding(false);
+            else if (charset == Charset.UTF8BOM)
+                document.Encoding = new UTF8Encoding(true);
+            else if (charset == Charset.UTF16LE)
+                document.Encoding = Encoding.Unicode;
+            else if (charset == Charset.UTF16BE)
+                document.Encoding = Encoding.BigEndianUnicode;
         }
 
         internal void TrimTrailingWhitespace(ITextSnapshot snapshot, ITextEdit edit)
