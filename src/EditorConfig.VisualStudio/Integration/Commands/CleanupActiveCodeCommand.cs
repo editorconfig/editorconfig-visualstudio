@@ -1,5 +1,8 @@
 ﻿using EnvDTE;
 using System.ComponentModel.Design;
+using Microsoft.VisualStudio.Editor;
+using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.TextManager.Interop;
 using EditorConfig.VisualStudio.Helpers;
 
 namespace EditorConfig.VisualStudio.Integration.Commands
@@ -51,7 +54,10 @@ namespace EditorConfig.VisualStudio.Integration.Commands
         /// </summary>
         protected override void OnExecute()
         {
-            CodeCleanupManager.Cleanup(ActiveDocument);
+            var textBuffer = GetCurrentTextBuffer();
+
+            if (textBuffer != null)
+                CodeCleanupManager.Cleanup(ActiveDocument, textBuffer);
         }
 
         #endregion BaseCommand Members
@@ -62,7 +68,8 @@ namespace EditorConfig.VisualStudio.Integration.Commands
         /// Called before a document is saved in order to potentially run code cleanup.
         /// </summary>
         /// <param name="document">The document about to be saved.</param>
-        internal void OnBeforeDocumentSave(Document document)
+        /// <param name="textBuffer">The text buffer for the document.</param>
+        internal void OnBeforeDocumentSave(Document document, ITextBuffer textBuffer)
         {
             try
             {
@@ -70,13 +77,25 @@ namespace EditorConfig.VisualStudio.Integration.Commands
 
                 using (new ActiveDocumentRestorer(Package))
                 {
-                    CodeCleanupManager.Cleanup(document);
+                    CodeCleanupManager.Cleanup(document, textBuffer);
                 }
             }
             finally
             {
                 EditorConfigPackage.IsAutoSaveContext = false;
             }
+        }
+
+        private ITextBuffer GetCurrentTextBuffer()
+        {
+            IVsTextView textView;
+
+            var textManager = ServiceProvider.GetService(typeof(SVsTextManager)) as IVsTextManager;
+            var adapter = Package.ComponentModel.GetService<IVsEditorAdaptersFactoryService>();
+
+            textManager.GetActiveView(1, null, out textView);
+
+            return adapter.GetWpfTextView(textView).TextBuffer;
         }
 
         #endregion Internal Methods

@@ -1,6 +1,7 @@
 ﻿using EnvDTE;
 using System;
-using System.Text.RegularExpressions;
+using System.Linq;
+using Microsoft.VisualStudio.Text;
 using EditorConfig.Core;
 
 namespace EditorConfig.VisualStudio.Logic.Cleaning
@@ -15,8 +16,6 @@ namespace EditorConfig.VisualStudio.Logic.Cleaning
         #region Fields
 
         private readonly EditorConfigPackage _package;
-
-        private readonly Regex _trailingWhitespaces = new Regex(@"[ \t]+$", RegexOptions.Compiled);
 
         private readonly UndoTransactionHelper _undoTransactionHelper;
 
@@ -62,7 +61,8 @@ namespace EditorConfig.VisualStudio.Logic.Cleaning
         /// Attempts to run code cleanup on the specified document.
         /// </summary>
         /// <param name="document">The document for cleanup.</param>
-        internal void Cleanup(Document document)
+        /// <param name="textBuffer">The text buffer for the document.</param>
+        internal void Cleanup(Document document, ITextBuffer textBuffer)
         {
             if (!_codeCleanupAvailabilityLogic.ShouldCleanup(document, true)) return;
 
@@ -80,7 +80,7 @@ namespace EditorConfig.VisualStudio.Logic.Cleaning
                     _package.IDE.StatusBar.Text = String.Format("EditorConfig is cleaning '{0}'...", document.Name);
 
                     // Perform the set of configured cleanups based on the language.
-                    RunCodeCleanupGeneric(document);
+                    RunCodeCleanupGeneric(document, textBuffer);
 
                     _package.IDE.StatusBar.Text = String.Format("EditorConfig cleaned '{0}'.", document.Name);
                 },
@@ -99,7 +99,8 @@ namespace EditorConfig.VisualStudio.Logic.Cleaning
         /// Attempts to run code cleanup on the specified generic document.
         /// </summary>
         /// <param name="document">The document for cleanup.</param>
-        private void RunCodeCleanupGeneric(Document document)
+        /// <param name="textBuffer">The text buffer for the document.</param>
+        private void RunCodeCleanupGeneric(Document document, ITextBuffer textBuffer)
         {
             var doc = (TextDocument)document.Object("TextDocument");
             var path = doc.Parent.FullName;
@@ -108,63 +109,80 @@ namespace EditorConfig.VisualStudio.Logic.Cleaning
             if (!ConfigLoader.TryLoad(path, out settings))
                 return;
 
-            if (settings.TryKeyAsBool("insert_final_newline"))
-                InsertFinalNewline(doc, settings.EndOfLine());
+            using (ITextEdit edit = textBuffer.CreateEdit())
+            {
+                ITextSnapshot snapshot = edit.Snapshot;
 
-            if (settings.TryKeyAsBool("trim_trailing_whitespace"))
-                TrimTrailingWhitespace(doc);
+                if (settings.TryKeyAsBool("trim_trailing_whitespace"))
+                    TrimTrailingWhitespace(snapshot, edit);
 
-            var eol = settings.EndOfLine();
-            FixLineEndings(doc, eol);
+                if (settings.TryKeyAsBool("insert_final_newline"))
+                    InsertFinalNewline(snapshot, edit, settings.EndOfLine());
+
+                var eol = settings.EndOfLine();
+                FixLineEndings(snapshot, edit, eol);
+
+                edit.Apply();
+            }
         }
 
-        internal void TrimTrailingWhitespace(TextDocument doc)
+        internal void TrimTrailingWhitespace(ITextSnapshot snapshot, ITextEdit edit)
         {
-            foreach (var cursor in doc.FindMatches(_package.UsePOSIXRegEx ? @":b+\n" : @"[ \t]+\r?\n"))
-                cursor.Delete(_trailingWhitespaces.Match(cursor.GetLine()).Length);
+            foreach (ITextSnapshotLine line in snapshot.Lines)
+            {
+                var text = line.GetText();
+
+                if (text != null)
+                {
+                    int index = text.Length - 1;
+
+                    while (index >= 0 && char.IsWhiteSpace(text[index]))
+                        index--;
+
+                    if (index < text.Length - 1)
+                        edit.Delete(line.Start.Position + index + 1, text.Length - index - 1);
+                }
+            }
         }
 
         /// <summary>
         /// Inserts a newline at the end of the file, if it doesn't already exist.
         /// </summary>
-        /// <param name="textDocument">The text document, on which to operate.</param>
+        /// <param name="snapshot">The snapshot of the document to enforce.</param>
+        /// <param name="edit">The edit context of the document to enforce.</param>
         /// <param name="eol">The eol character to add.</param>
-        internal void InsertFinalNewline(TextDocument textDocument, string eol)
+        internal void InsertFinalNewline(ITextSnapshot snapshot, ITextEdit edit, string eol)
         {
-            var cursor = textDocument.EndPoint.CreateEditPoint();
-            if (cursor.AtStartOfLine) return;
+            var line = snapshot.Lines.LastOrDefault();
 
-            if (eol == null)
+            if (line != null && !string.IsNullOrWhiteSpace(line.GetText()))
             {
-                cursor.LineUp();
-                cursor.EndOfLine();
-                eol = cursor.GetText(1);
-                if (eol == @"\r")
-                    eol += @"\n";
-                else if (eol != @"\n")
+                if (eol == null)
                     eol = Environment.NewLine;
-                cursor.EndOfDocument();
-            }
 
-            cursor.Insert(eol);
+                edit.Insert(line.End.Position, eol);
+            }
         }
 
         /// <summary>
         /// Enforce line endings to follow the rules defined in the EditorConfig file.
         /// </summary>
-        /// <param name="doc">The document to enforce.</param>
+        /// <param name="snapshot">The snapshot of the document to enforce.</param>
+        /// <param name="edit">The edit context of the document to enforce.</param>
         /// <param name="eol">The line ending to enforce.</param>
-        internal void FixLineEndings(TextDocument doc, string eol)
+        internal void FixLineEndings(ITextSnapshot snapshot, ITextEdit edit, string eol)
         {
             if (eol == null)
             {
                 return;
             }
-            for (var cursor = doc.StartPoint.CreateEditPoint(); !cursor.AtEndOfDocument; cursor.LineDown())
+
+            foreach (ITextSnapshotLine line in snapshot.Lines)
             {
-                cursor.EndOfLine();
-                if (cursor.GetText(1) != eol)
-                    cursor.ReplaceText(1, eol, 0);
+                var lineBreak = line.GetLineBreakText();
+
+                if (!string.IsNullOrEmpty(lineBreak) && lineBreak != eol)
+                    edit.Replace(line.End.Position, line.LineBreakLength, eol);
             }
         }
 

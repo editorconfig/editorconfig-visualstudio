@@ -66,6 +66,15 @@
     <None Include="paket.references" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6' Or $(TargetFrameworkVersion) == 'v4.6.1' Or $(TargetFrameworkVersion) == 'v4.6.2')">
+      <PropertyGroup>
+        <__paket__Microsoft_VSSDK_BuildTools_props>Microsoft.VSSDK.BuildTools</__paket__Microsoft_VSSDK_BuildTools_props>
+        <__paket__Microsoft_VSSDK_BuildTools_targets>Microsoft.VSSDK.BuildTools</__paket__Microsoft_VSSDK_BuildTools_targets>
+      </PropertyGroup>
+    </When>
+  </Choose>
+  <Import Project="..\..\packages\Microsoft.VSSDK.BuildTools\build\$(__paket__Microsoft_VSSDK_BuildTools_props).props" Condition="Exists('..\..\packages\Microsoft.VSSDK.BuildTools\build\$(__paket__Microsoft_VSSDK_BuildTools_props).props')" Label="Paket" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -76,16 +85,7 @@
   -->
   <Import Project="..\..\.paket\paket.targets" />
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6' Or $(TargetFrameworkVersion) == 'v4.6.1')">
-      <PropertyGroup>
-        <__paket__Microsoft_VSSDK_BuildTools_props>Microsoft.VSSDK.BuildTools</__paket__Microsoft_VSSDK_BuildTools_props>
-        <__paket__Microsoft_VSSDK_BuildTools_targets>Microsoft.VSSDK.BuildTools</__paket__Microsoft_VSSDK_BuildTools_targets>
-      </PropertyGroup>
-    </When>
-  </Choose>
-  <Import Project="..\..\packages\Microsoft.VSSDK.BuildTools\build\$(__paket__Microsoft_VSSDK_BuildTools_props).props" Condition="Exists('..\..\packages\Microsoft.VSSDK.BuildTools\build\$(__paket__Microsoft_VSSDK_BuildTools_props).props')" Label="Paket" />
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6' Or $(TargetFrameworkVersion) == 'v4.6.1')">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6' Or $(TargetFrameworkVersion) == 'v4.6.1' Or $(TargetFrameworkVersion) == 'v4.6.2')">
       <ItemGroup>
         <Reference Include="Microsoft.Build.Framework.dll">
           <Paket>True</Paket>

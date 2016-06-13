@@ -1,7 +1,10 @@
 ﻿using EnvDTE;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.TextManager.Interop;
 using System.Linq;
 
 namespace EditorConfig.VisualStudio.Integration.Events
@@ -11,6 +14,12 @@ namespace EditorConfig.VisualStudio.Integration.Events
     /// </summary>
     internal class RunningDocumentTableEventListener : BaseEventListener, IVsRunningDocTableEvents3
     {
+        #region Fields
+
+        private IVsEditorAdaptersFactoryService _editorAdaptersFactory;
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -20,6 +29,8 @@ namespace EditorConfig.VisualStudio.Integration.Events
         internal RunningDocumentTableEventListener(EditorConfigPackage package)
             : base(package)
         {
+            _editorAdaptersFactory = Package.ComponentModel.GetService<IVsEditorAdaptersFactoryService>();
+
             // Create and store a reference to the running document table.
             RunningDocumentTable = new RunningDocumentTable(package);
 
@@ -35,7 +46,7 @@ namespace EditorConfig.VisualStudio.Integration.Events
         /// A delegate specifying the contract for a document save event.
         /// </summary>
         /// <param name="document">The document being saved.</param>
-        internal delegate void OnDocumentSaveEventHandler(Document document);
+        internal delegate void OnDocumentSaveEventHandler(Document document, ITextBuffer textBuffer);
 
         /// <summary>
         /// An event raised before a document is saved.
@@ -74,6 +85,23 @@ namespace EditorConfig.VisualStudio.Integration.Events
             return Package.IDE.Documents.OfType<Document>().FirstOrDefault(x => x.FullName == documentName);
         }
 
+        private ITextBuffer GetTextBufferFromCookie(uint docCookie)
+        {
+            var documentInfo = RunningDocumentTable.GetDocumentInfo(docCookie);
+
+            var textLines = documentInfo.DocData as IVsTextLines;
+            var textBufferProvider = documentInfo.DocData as IVsTextBufferProvider;
+
+            ITextBuffer textBuffer = null;
+
+            if (textLines != null)
+                textBuffer = _editorAdaptersFactory.GetDataBuffer(textLines);
+            else if (textBufferProvider != null && textBufferProvider.GetTextBuffer(out textLines) == 0)
+                textBuffer = _editorAdaptersFactory.GetDataBuffer(textLines);
+
+            return textBuffer;
+        }
+
         #endregion Private Methods
 
         #region IVsRunningDocTableEvents3 Members
@@ -88,15 +116,16 @@ namespace EditorConfig.VisualStudio.Integration.Events
             if (BeforeSave != null)
             {
                 var document = GetDocumentFromCookie(docCookie);
+                var textBuffer = GetTextBufferFromCookie(docCookie);
 
-                BeforeSave(document);
+                BeforeSave(document, textBuffer);
             }
 
             return VSConstants.S_OK;
         }
 
         #region Unused Members
-        
+
         public int OnAfterAttributeChange(uint docCookie, uint grfAttribs)
         {
             return VSConstants.S_OK;
