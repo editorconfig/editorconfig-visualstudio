@@ -75,10 +75,11 @@ Target "AssemblyInfo" (fun _ ->
       (Attribute.Title "EditorConfig.VisualStudio" :: shared)
 
   let manifest = "src/EditorConfig.VisualStudio/source.extension.vsixmanifest"
+  let identity = "    <Identity Id=\"EditorConfig..5cd8e6a2-be43-4fcc-a345-40f6cc1e9c9f\" Version=\"" + release.NugetVersion + "\" Language=\"en-US\" Publisher=\"EditorConfig Team\" />"
   File.WriteAllLines(
       manifest,
       File.ReadAllLines manifest
-      |> Array.map (fun l -> if l.Contains("<Version>") then sprintf "    <Version>%s</Version>" release.NugetVersion else l))
+      |> Array.map (fun l -> if l.Contains("<Identity") then identity else l))
 
 )
 
