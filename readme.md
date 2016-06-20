@@ -38,3 +38,5 @@ The plugin supports the following EditorConfig [properties](http://editorconfig.
 ## Reporting problems
 
 If you encounter any problems, feel free to report them at the [issue tracker](https://github.com/editorconfig/editorconfig-visualstudio/issues).
+
+Please note that you shouldn't expect to see settings from your .editorconfig file's configuration in the text editor options dialog. Those are your global settings that we try to restore whenever we can so we do not bleed into your projects not using editorconfig.
