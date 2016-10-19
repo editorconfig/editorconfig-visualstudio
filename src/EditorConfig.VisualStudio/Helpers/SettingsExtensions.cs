@@ -11,6 +11,7 @@ namespace EditorConfig.VisualStudio.Helpers
         public static bool TryLoad(string path, out FileConfiguration fileConfiguration)
         {
             fileConfiguration = null;
+            if (string.IsNullOrEmpty(path)) return false;
             var parser = new EditorConfigParser();
             var configurations = parser.Parse(path);
             if (!configurations.Any()) return false;
