@@ -6,6 +6,24 @@ This plugin allows you to have per project checked in Visual Studio settings usi
 
 See the [project web site](http://editorconfig.org) for more information.
 
+## VS 2017
+
+As of [2017 rc1](https://www.visualstudio.com/en-us/news/releasenotes/vs2017-relnotes) Visual Studio ships with `.editorconfig` support baked in! 
+
+This in fact part of roslyn and will mean that other editors relying on roslyn (omnisharp) to do the code formatting will also benefit from this. 
+
+On top of that roslyn will introduce more editor config extension properties to control additional formatting options per project see e.g: https://github.com/dotnet/roslyn/pull/15029
+
+For now this baked in implementation has 2 limitations:
+
+* Does not work for XML files
+* Does not support `insert_final_newline` and `trim_trailing_whitespace`
+
+If you feel strongly there is a need for editorconfig plugin (given these limitations still exists at the time of reading) and you want to submit a PR and become a maintainer ping one of the editorconfig team members!
+
+#Resharper
+
+The plugin and resharper tend to not play nicely, resharper will **also** support `.editorconfig` files in the near future see: https://youtrack.jetbrains.com/issue/RSRP-461746
 
 ## Installing
 
