@@ -10,9 +10,9 @@ See the [project web site](http://editorconfig.org) for more information.
 
 As of [2017 rc1](https://www.visualstudio.com/en-us/news/releasenotes/vs2017-relnotes) Visual Studio ships with `.editorconfig` support baked in! 
 
-This in fact part of roslyn and will mean that other editors relying on roslyn (omnisharp) to do the code formatting will also benefit from this. 
+This is in fact part of roslyn and will mean that other editors relying on roslyn (omnisharp) to do the code formatting will also benefit from this. 
 
-On top of that roslyn will introduce more editor config extension properties to control additional formatting options per project see e.g: https://github.com/dotnet/roslyn/pull/15029
+On top of that roslyn will introduce more editorconfig extension properties to control additional formatting options per project see e.g: https://github.com/dotnet/roslyn/pull/15029
 
 For now this baked in implementation has 2 limitations:
 
