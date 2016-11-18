@@ -21,7 +21,7 @@ For now this baked in implementation has 2 limitations:
 
 If you feel strongly there is a need for editorconfig plugin (given these limitations still exists at the time of reading) and you want to submit a PR and become a maintainer ping one of the editorconfig team members!
 
-#Resharper
+## Resharper
 
 The plugin and resharper tend to not play nicely, resharper will **also** support `.editorconfig` files in the near future see: https://youtrack.jetbrains.com/issue/RSRP-461746
 
