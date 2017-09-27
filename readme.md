@@ -8,7 +8,7 @@ See the [project web site](http://editorconfig.org) for more information.
 
 ## VS 2017
 
-As of [2017 rc1](https://www.visualstudio.com/en-us/news/releasenotes/vs2017-relnotes) Visual Studio ships with `.editorconfig` support baked in! 
+As of [Visual Studio 2017](https://www.visualstudio.com/en-us/news/releasenotes/vs2017-relnotes) Visual Studio ships with `.editorconfig` support baked in! 
 
 This is in fact part of roslyn and will mean that other editors relying on roslyn (omnisharp) to do the code formatting will also benefit from this. 
 
@@ -27,7 +27,7 @@ The plugin and resharper tend to not play nicely, resharper will **also** suppor
 
 ## Installing
 
-This plugin works with Visual Studio 2012 or later. The easiest way to install it is through Visual Studio's built-in Extension Manager. Just search for "EditorConfig" in the Online Gallery section. Or, download a copy from the [Visual Studio gallery](http://visualstudiogallery.msdn.microsoft.com/c8bccfe2-650c-4b42-bc5c-845e21f96328) website.
+This plugin works with Visual Studio 2012, 2013, and 2015. Again, this plugin is not needed on 2017. The easiest way to install it is through Visual Studio's built-in Extension Manager. Just search for "EditorConfig" in the Online Gallery section. Or, download a copy from the [Visual Studio gallery](http://visualstudiogallery.msdn.microsoft.com/c8bccfe2-650c-4b42-bc5c-845e21f96328) website.
 
 ## Bleeding edge [![Build status](https://ci.appveyor.com/api/projects/status/ad0dc6ldff3bbf3o?svg=true)](https://ci.appveyor.com/project/Mpdreamz/editorconfig-visualstudio/branch/master)
 
