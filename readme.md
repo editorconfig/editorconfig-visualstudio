@@ -17,7 +17,7 @@ On top of that roslyn will introduce more editorconfig extension properties to c
 For now this baked in implementation has 2 limitations:
 
 * Does not work for XML files
-* Does not support `insert_final_newline` and `trim_trailing_whitespace`
+* Does not support `insert_final_newline` and `trim_trailing_whitespace` (note that these options are supported from Visual Studio 2017 version 15.3)
 
 If you feel strongly there is a need for editorconfig plugin (given these limitations still exists at the time of reading) and you want to submit a PR and become a maintainer ping one of the editorconfig team members!
 
