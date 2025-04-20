@@ -4,7 +4,7 @@
     <Identity Id="EditorConfig..5cd8e6a2-be43-4fcc-a345-40f6cc1e9c9f" Version="0.6.0" Language="en-US" Publisher="EditorConfig Team" />
     <DisplayName>EditorConfig</DisplayName>
     <Description xml:space="preserve">Loads editor options such as indentation sizes from standard, cross-platform .editorconfig files on a per project/solution basis.</Description>
-    <MoreInfo>http://editorconfig.org/</MoreInfo>
+    <MoreInfo>https://editorconfig.org/</MoreInfo>
     <License>License.txt</License>
     <GettingStartedGuide>https://github.com/editorconfig/editorconfig-visualstudio/blob/master/readme.md</GettingStartedGuide>
     <ReleaseNotes>https://github.com/editorconfig/editorconfig-visualstudio/blob/master/release-notes.md</ReleaseNotes>
